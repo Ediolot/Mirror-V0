@@ -6,7 +6,7 @@
 #define MM_TEST_VIDEOCAM_H
 
 
-class videoCam {
+class VideoCam {
 
 };
 
