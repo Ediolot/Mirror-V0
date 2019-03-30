@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(mm_test)
+project(mirror_test)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -11,7 +11,7 @@ set(ALLEGRO5_LIBS allegro_monolith-debug)
 # OPENCV 4
 find_package(OpenCV REQUIRED HINTS "D:/Programming/Libs/opencv-4.0.1")
 
-add_executable(mm_test main.cpp)
-target_include_directories(mm_test PRIVATE ${ALLEGRO5_INCLUDE})
-target_link_directories(mm_test PRIVATE ${ALLEGRO5_LIB_DIR})
-target_link_libraries(mm_test ${ALLEGRO5_LIBS} ${OpenCV_LIBS})
+add_executable(mirror_test main.cpp)
+target_include_directories(mirror_test PRIVATE ${ALLEGRO5_INCLUDE})
+target_link_directories(mirror_test PRIVATE ${ALLEGRO5_LIB_DIR})
+target_link_libraries(mirror_test ${ALLEGRO5_LIBS} ${OpenCV_LIBS})
