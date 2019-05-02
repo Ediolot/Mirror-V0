@@ -4,11 +4,12 @@
 
 #include "Text.h"
 
-Text::Text(std::string txt, const ALLEGRO_FONT *font, ALLEGRO_COLOR color, int x, int y, Align hAlign, Align vAlign)
-    : color(color)
+Text::Text(std::string txt, const ALLEGRO_FONT *font, ALLEGRO_COLOR color, Align hAlign, Align vAlign,
+           const Widget *parent, int x, int y, Size size, Size minSize)
+    : Widget(parent, x, y, size, minSize)
+    , color(color)
     , font(font)
     , txt(std::move(txt))
-    , x(x), y(y)
     , hAlign(hAlign)
     , vAlign(vAlign)
 {}

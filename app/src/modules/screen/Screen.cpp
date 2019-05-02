@@ -3,6 +3,7 @@
 #include "../resources/Fonts.h"
 #include "../resources/Colors.h"
 #include "../widgets/DateTime.h"
+#include "../widgets/basic/Layout.h"
 
 Screen::Screen(int width, int height, int targetFPS, bool debug, bool fullScreen)
     : loopTimer(nullptr)
@@ -82,7 +83,7 @@ void Screen::run() {
             }
             // Draw screen
             redraw = false;
-            al_clear_to_color(Colors::get(Colors::Rid::BLACK));
+            al_clear_to_color(Colors::get(Colors::BLACK));
             draw(elapsed);
             // Draw fps over (if debug)
             drawFPS();
@@ -93,12 +94,18 @@ void Screen::run() {
 }
 
 void Screen::draw(double elapsed) {
-    static DateTime dt;
+    static HLayout dt(nullptr, 0, 0, Size(100, 10));
+    static bool first = true;
 
+    if (first) {
+        dt.addWidget(new Text("asd", Fonts::get(Fonts::DEFAULT_FONT), Colors::get(Colors::WHITE)));
+        dt.addWidget(new Text("xyz", Fonts::get(Fonts::DEFAULT_FONT), Colors::get(Colors::WHITE)));
+        first = false;
+    }
     dt.draw();
 }
 
 void Screen::drawFPS() {
     std::string txt = "FPS: " + std::to_string(fps);
-    //al_draw_text(Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
+    //al_draw_text(Fonts::get(Fonts::DEFAULT_FONT), Colors::get(Colors::WHITE), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
 }

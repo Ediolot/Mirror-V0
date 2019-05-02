@@ -8,11 +8,12 @@
 #include "../resources/Fonts.h"
 #include "../resources/Colors.h"
 
-DateTime::DateTime()
-    : date("", Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 0, 0)
-    , time("", Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 0, date.getHeight())
-{
-}
+
+DateTime::DateTime(const Widget *parent, int x, int y, Size size, Size minSize)
+    : Widget(parent, x, y, size, minSize)
+    , date("", Fonts::get(Fonts::DEFAULT_FONT), Colors::get(Colors::WHITE), LEFT, TOP, this, 0, 0)
+    , time("", Fonts::get(Fonts::DEFAULT_FONT), Colors::get(Colors::WHITE), LEFT, TOP, this, 0, date.getHeight())
+{}
 
 void DateTime::draw() {
     update(); // Shouldnt be here
@@ -40,3 +41,5 @@ void DateTime::setDateTime(std::string &dateStr, std::string &timeStr) {
     dateStr = dateBuffer.str();
     timeStr = timeBuffer.str();
 }
+
+

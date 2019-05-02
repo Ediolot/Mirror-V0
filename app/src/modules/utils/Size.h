@@ -6,11 +6,16 @@
 #define MIRROR_APP_SIZE_H
 
 
-struct Size {
-    double w = 0;
-    double h = 0;
-    bool percentageW = false;
-    bool percentageH = false;
+class Size {
+public:
+    double w;
+    double h;
+    bool percentageW;
+    bool percentageH;
+
+    Size(double w, double h, bool percentageW = false, bool percentageH = false)
+        : w(w), h(h), percentageW(percentageW), percentageH(percentageH)
+    {}
 };
 
 
