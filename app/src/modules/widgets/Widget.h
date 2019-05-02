@@ -6,15 +6,23 @@
 #define MIRROR_APP_WIDGET_H
 
 
+#include "../utils/Size.h"
+
 class Widget {
+    const Widget *parent;
     int x;
     int y;
-    int w;
-    int h;
+    Size size;
 
 public:
+    Widget(const Widget* parent, int x, int y, Size size);
+
     virtual void draw() = 0; // Should be const
     virtual void update() = 0;
+
+    void setSize(Size size);
+    void setW(double w, bool percentage = false);
+    void setH(double h, bool percentage = false);
 };
 
 
