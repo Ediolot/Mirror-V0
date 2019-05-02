@@ -12,19 +12,10 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 
-#define INIT(msg, ok, lambda) do {                           \
-    if (ok) {                                                \
-        std::cout << (msg);                                  \
-        ok = bool((lambda)());                               \
-        std::cout << (ok ? "[OK]" : "[FALSE]") << std::endl; \
-    }                                                        \
-} while(false)
-
 class Screen {
     ALLEGRO_TIMER* loopTimer;
     ALLEGRO_EVENT_QUEUE* eventQ;
     ALLEGRO_DISPLAY* display;
-    ALLEGRO_FONT* defaultFont;
 
     bool debug;
     bool fullScreen;

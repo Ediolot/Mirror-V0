@@ -14,6 +14,8 @@
 namespace Utils {
     std::string allegroVersion();
     void matToBitmapRGB888(const cv::Mat& mat, ALLEGRO_BITMAP* bitmap);
+    void initAllegroModule(const std::string msg, bool &ok, std::function<bool()> lambda);
+    bool startAllegro();
 }
 
 

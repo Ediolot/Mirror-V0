@@ -1,10 +1,12 @@
 #include "Screen.h"
+#include "../utils/Utils.h"
+#include "../resources/Fonts.h"
+#include "../resources/Colors.h"
 
 Screen::Screen(int width, int height, int targetFPS, bool debug, bool fullScreen)
     : loopTimer(nullptr)
     , eventQ(nullptr)
     , display(nullptr)
-    , defaultFont(nullptr)
     , debug(debug)
     , fullScreen(fullScreen)
     , width(width)
@@ -18,47 +20,23 @@ Screen::~Screen() {
 }
 
 void Screen::destroy_allegro_vars() {
-    if (display)   al_destroy_display(display);
-    if (eventQ)    al_destroy_event_queue(eventQ);
-    if (loopTimer) al_destroy_timer(loopTimer);
+    if (display)     al_destroy_display(display);
+    if (eventQ)      al_destroy_event_queue(eventQ);
+    if (loopTimer)   al_destroy_timer(loopTimer);
 }
 
 bool Screen::startAllegro() {
     bool ok = true;
 
-    INIT("Allegro init...", ok, [](){
-        return al_init();
-    });
-    INIT("Allegro primitives...", ok, [](){
-        return al_init_primitives_addon();
-    });
-    INIT("Allegro audio...", ok, [](){
-        return al_install_audio();
-    });
-    INIT("Allegro audio codec...", ok, [](){
-        return al_init_acodec_addon();
-    });
-    INIT("Allegro reserve samples...", ok, [](){
-        return al_reserve_samples(1);
-    });
-    INIT("Allegro font & ttf...", ok, [](){
-        al_init_font_addon();
-        al_init_ttf_addon();
-        return true;
-    });
-    INIT("Allegro loading fonts...", ok, [&](){
-        defaultFont = al_load_font("../files/Ubuntu-Regular.ttf", 16, 0);
-        return defaultFont;
-    });
-    INIT("Allegro creating timers...", ok, [&](){
+    Utils::initAllegroModule("Allegro creating timers...", ok, [&](){
         loopTimer = al_create_timer(1.0 / targetFPS);
         return loopTimer;
     });
-    INIT("Allegro creating event queues...", ok, [&](){
+    Utils::initAllegroModule("Allegro creating event queues...", ok, [&](){
         eventQ = al_create_event_queue();
         return eventQ;
     });
-    INIT("Allegro creating displays...", ok, [&](){
+    Utils::initAllegroModule("Allegro creating displays...", ok, [&](){
         display = al_create_display(width, height);
         return display;
     });
@@ -103,7 +81,7 @@ void Screen::run() {
             }
             // Draw screen
             redraw = false;
-            al_clear_to_color(al_map_rgb(0,0,0));
+            al_clear_to_color(Colors::get(Colors::Rid::BLACK));
             draw(elapsed);
             // Draw fps over (if debug)
             drawFPS();
@@ -123,7 +101,7 @@ void Screen::draw(double elapsed) {
     static double y = 0;
     const double w = 100;
     const double h = 100;
-    al_draw_filled_rectangle(x, y, x + w, y + h, al_map_rgb(200,200,255));
+    al_draw_filled_rectangle(x, y, x + w, y + h, Colors::get(Colors::Rid::CYAN));
 
     x += sx * elapsed;
     y += sy * elapsed;
@@ -147,5 +125,5 @@ void Screen::draw(double elapsed) {
 
 void Screen::drawFPS() {
     std::string txt = "FPS: " + std::to_string(fps);
-    al_draw_text(defaultFont, al_map_rgb(255,255,255), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
+    al_draw_text(Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
 }
