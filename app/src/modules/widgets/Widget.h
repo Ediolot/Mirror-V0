@@ -7,7 +7,14 @@
 
 
 class Widget {
+    int x;
+    int y;
+    int w;
+    int h;
 
+public:
+    virtual void draw() = 0; // Should be const
+    virtual void update() = 0;
 };
 
 

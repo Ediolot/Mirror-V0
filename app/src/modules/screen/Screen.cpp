@@ -2,6 +2,7 @@
 #include "../utils/Utils.h"
 #include "../resources/Fonts.h"
 #include "../resources/Colors.h"
+#include "../widgets/DateTime.h"
 
 Screen::Screen(int width, int height, int targetFPS, bool debug, bool fullScreen)
     : loopTimer(nullptr)
@@ -92,38 +93,12 @@ void Screen::run() {
 }
 
 void Screen::draw(double elapsed) {
-    // Elapsed counts the elapsed time from the last frame. So, even when the framerate changes
-    // the square will move at the same speed (sx, sy)
-    // Only for example purposes, do not use static variables here !
-    static double sx = 100;
-    static double sy = 100;
-    static double x = 0;
-    static double y = 0;
-    const double w = 100;
-    const double h = 100;
-    al_draw_filled_rectangle(x, y, x + w, y + h, Colors::get(Colors::Rid::CYAN));
+    static DateTime dt;
 
-    x += sx * elapsed;
-    y += sy * elapsed;
-    if ((x+w) > width) {
-        x = (width - w);
-        sx *= -1;
-    }
-    if ((y+h) > height) {
-        y = (height - h);
-        sy *= -1;
-    }
-    if (x < 0) {
-        x = 0;
-        sx *= -1;
-    }
-    if (y < 0) {
-        y = 0;
-        sy *= -1;
-    }
+    dt.draw();
 }
 
 void Screen::drawFPS() {
     std::string txt = "FPS: " + std::to_string(fps);
-    al_draw_text(Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
+    //al_draw_text(Fonts::get(Fonts::Rid::DEFAULT_FONT), Colors::get(Colors::Rid::WHITE), 10, 10, ALLEGRO_ALIGN_LEFT, txt.c_str());
 }

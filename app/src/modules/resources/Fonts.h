@@ -9,11 +9,16 @@
 
 class Fonts {
     static const int ELEMENTS = 1;
-    ALLEGRO_FONT* fonts[ELEMENTS];
+    static const int SIZES = 5;
+    ALLEGRO_FONT* fonts[ELEMENTS * SIZES];
     
 public:
     enum Rid {
         DEFAULT_FONT = 0,
+    };
+
+    enum Size {
+        PX8 = 0, PX16 = 1, PX32 = 2, PX64 = 3, PX128 = 4
     };
 
     static Fonts& getInstance() {
@@ -21,8 +26,8 @@ public:
         return x;
     }
 
-    static const ALLEGRO_FONT* get(Rid id) {
-        return Fonts::getInstance().fonts[id];
+    static const ALLEGRO_FONT* get(Rid id, Size size = PX16) {
+        return Fonts::getInstance().fonts[id + size];
     }
 
     Fonts(const Fonts&) = delete;

@@ -21,8 +21,19 @@ bool Fonts::load() {
     bool ok = true;
 
     Utils::initAllegroModule("Allegro loading fonts...", ok, [&](){
-        fonts[DEFAULT_FONT] = al_load_font("../files/Ubuntu-Regular.ttf", 16, 0);
-        return fonts[DEFAULT_FONT];
+        fonts[DEFAULT_FONT + PX8]   = al_load_font("../files/Ubuntu-Regular.ttf", 8, 0);
+        fonts[DEFAULT_FONT + PX16]  = al_load_font("../files/Ubuntu-Regular.ttf", 16, 0);
+        fonts[DEFAULT_FONT + PX32]  = al_load_font("../files/Ubuntu-Regular.ttf", 32, 0);
+        fonts[DEFAULT_FONT + PX64]  = al_load_font("../files/Ubuntu-Regular.ttf", 64, 0);
+        fonts[DEFAULT_FONT + PX128] = al_load_font("../files/Ubuntu-Regular.ttf", 128, 0);
+
+        // Check if all fonts are ok
+        for (auto &font : fonts) {
+            if (font == nullptr) {
+                return false;
+            }
+        }
+        return true;
     });
 
     return ok;
