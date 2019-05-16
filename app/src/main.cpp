@@ -4,18 +4,19 @@
 #include "modules/utils/Utils.h"
 #include "modules/resources/Fonts.h"
 #include "modules/resources/Colors.h"
+#include "App.h"
+
 
 int main(int argc, char** argv) {
     std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
     std::cout << "Allegro Version: " << Utils::allegroVersion() << std::endl;
 
-    const int FPS = 80;
+    App app;
+    app.run();
+
+    /*const int FPS = 80;
     const int WIDTH = 640;
     const int HEIGHT = 480;
-
-    Utils::startAllegro();
-    Fonts::getInstance().load();
-    Colors::getInstance().load();
 
     Screen screen(WIDTH, HEIGHT, FPS);
 
@@ -23,7 +24,7 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    screen.run();
+    screen.run();*/
 
     return 0;
 }
