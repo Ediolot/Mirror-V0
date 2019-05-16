@@ -2,74 +2,72 @@
 // Created by jsier on 16/05/2019.
 //
 
+#include <tinydir.h>
 #include "App.h"
 
 App::App()
-    : loopTimer(nullptr)
-    , eventQ(nullptr)
-    , display(nullptr)
-    , width(640)
+    : width(640)
     , height(480)
+    , screens()
+    , mainScreenId(-1)
+    , quit(false)
+    , drawingEventQ(nullptr)
+    , drawingTimer(nullptr)
+    , display(nullptr)
     , targetViewFPS(60)
     , fps()
-    , screens()
-    , mainScreenId(0)
-    , quit(false)
+    , eventQ(nullptr)
 {
-    // screens.emplace_back(640, 480, 80); // Example main screen
-
     Utils::startAllegro();
     Fonts::getInstance().load();
     Colors::getInstance().load();
+    loadScreens();
 }
 
 App::~App() {
     destroyAllegroVars();
+    for (Widget* screen : screens) {
+        delete screen;
+    }
 }
 
 void App::run() {
     startAllegroVars();
-    std::thread updaterView(&App::updateViews, this);
     std::thread updaterController(&App::updateControllers, this);
-    // std::thread updaterEvents(&App::updateEvents, this);
-    updaterView.join();
+    std::thread updaterEvents(&App::updateEvents, this);
+    updateViews();
     updaterController.join();
+    updaterEvents.join();
 }
 
 void App::updateEvents() {
-    // In case there is a need to separate drawing from the events
-}
-
-void App::updateViews() {
-    bool redraw = true;
-
-    bool ok = true;
-    Utils::initAllegroModule("Allegro creating displays...", ok, [&](){
-        display = al_create_display(width, height);
-        return display;
-    });
-    al_register_event_source(eventQ, al_get_display_event_source(display));
-
-    fps.init();
-
-    al_start_timer(loopTimer);
     while (!quit.load()) {
         ALLEGRO_EVENT ev{};
         al_wait_for_event(eventQ, &ev);
 
         switch (ev.type) {
-            case ALLEGRO_EVENT_TIMER: redraw = true; break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE: quit.store(true); break;
             default: break;
         }
+    }
+}
 
-        if (redraw && al_event_queue_is_empty(eventQ)) {
+void App::updateViews() {
+    fps.init();
+
+    al_start_timer(drawingTimer);
+    while (!quit.load()) {
+        ALLEGRO_EVENT ev{};
+        al_wait_for_event(drawingEventQ, &ev);
+
+        if (ev.type == ALLEGRO_EVENT_TIMER) {
             fps.measure();
             al_clear_to_color(Colors::get(Colors::BLACK));
-            // screens[mainScreenId].updateViews();
+            if (mainScreenId > -1) {
+                //screens[mainScreenId]->updateViews();
+            }
             fps.draw();
             al_flip_display();
-            redraw = false;
         }
     }
 }
@@ -80,35 +78,64 @@ void App::updateControllers() {
     while (!quit.load()) {
         double update = al_get_time();
         double elapsed = update - lastUpdate;
-        if (lastUpdate > 0) {
-            //std::cout << "controllers " << elapsed << std::endl;
+        if (lastUpdate > 0 && mainScreenId > -1) {
+            //screens[mainScreenId]->updateControllers(elapsed);
         }
         lastUpdate = update;
     }
 }
 
 void App::destroyAllegroVars() {
-    if (display)     al_destroy_display(display);
-    if (eventQ)      al_destroy_event_queue(eventQ);
-    if (loopTimer)   al_destroy_timer(loopTimer);
+    if (display)       al_destroy_display(display);
+    if (eventQ)        al_destroy_event_queue(eventQ);
+    if (drawingEventQ) al_destroy_event_queue(drawingEventQ);
+    if (drawingTimer)  al_destroy_timer(drawingTimer);
 }
 
 bool App::startAllegroVars() {
     bool ok = true;
 
+    Utils::initAllegroModule("Allegro creating displays...", ok, [&](){
+        display = al_create_display(width, height);
+        return display;
+    });
     Utils::initAllegroModule("Allegro creating timers...", ok, [&](){
-        loopTimer = al_create_timer(1.0 / targetViewFPS);
-        return loopTimer;
+        drawingTimer = al_create_timer(1.0 / targetViewFPS);
+        return drawingTimer;
     });
     Utils::initAllegroModule("Allegro creating event queues...", ok, [&](){
         eventQ = al_create_event_queue();
-        return eventQ;
+        drawingEventQ = al_create_event_queue();
+        return eventQ && drawingEventQ;
     });
 
     if (!ok) {
         destroyAllegroVars();
     } else {
-        al_register_event_source(eventQ, al_get_timer_event_source(loopTimer));
+        al_register_event_source(eventQ, al_get_display_event_source(display));
+        al_register_event_source(drawingEventQ, al_get_timer_event_source(drawingTimer));
     }
     return ok;
+}
+
+void App::loadScreens() {
+    tinydir_dir dir;
+    tinydir_open(&dir, "/path/to/dir");
+
+    while (dir.has_next)
+    {
+        tinydir_file file;
+        tinydir_readfile(&dir, &file);
+
+        printf("%s", file.name);
+        if (file.is_dir)
+        {
+            printf("/");
+        }
+        printf("\n");
+
+        tinydir_next(&dir);
+    }
+
+    tinydir_close(&dir);
 }
