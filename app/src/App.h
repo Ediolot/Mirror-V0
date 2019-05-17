@@ -9,13 +9,12 @@
 #include <thread>
 #include <iostream>
 #include <atomic>
-#include "modules/resources/Fonts.h"
-#include "modules/utils/Utils.h"
-#include "modules/resources/Colors.h"
-#include "modules/utils/FPSMetric.h"
-#include "widgets/base/Widget.h"
-
-inline std::string const VIEWS_PATH = "../views/";
+#include "resources/Fonts.h"
+#include "utils/Utils.h"
+#include "resources/Colors.h"
+#include "utils/FPSMetric.h"
+#include "widgets/activity/BaseActivity.h"
+#include "widgets/activity/ActivityFactory.h"
 
 class App {
 
@@ -25,7 +24,7 @@ class App {
     std::atomic_bool quit;
 
     // Screens
-    std::vector<Widget*> screens;
+    std::vector<BaseActivity*> activities;
     int mainScreenId;
 
     // For the controller loop
@@ -53,7 +52,7 @@ public:
 
 private:
     // For each screen view, create a screen model + controller
-    void loadScreens();
+    void loadActivities();
     bool startAllegroVars();
     void destroyAllegroVars();
 };

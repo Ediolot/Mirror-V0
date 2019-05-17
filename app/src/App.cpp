@@ -4,11 +4,12 @@
 
 #include <tinydir.h>
 #include "App.h"
+#include "widgets/activity/ActivityFactory.h"
 
 App::App()
     : width(640)
     , height(480)
-    , screens()
+    , activities()
     , mainScreenId(-1)
     , quit(false)
     , drawingEventQ(nullptr)
@@ -21,13 +22,13 @@ App::App()
     Utils::startAllegro();
     Fonts::getInstance().load();
     Colors::getInstance().load();
-    loadScreens();
+    loadActivities();
 }
 
 App::~App() {
     destroyAllegroVars();
-    for (Widget* screen : screens) {
-        delete screen;
+    for (BaseActivity* activity : activities) {
+        delete activity;
     }
 }
 
@@ -118,24 +119,14 @@ bool App::startAllegroVars() {
     return ok;
 }
 
-void App::loadScreens() {
-    tinydir_dir dir;
-    tinydir_open(&dir, "/path/to/dir");
+void App::loadActivities() {
+    assert(activities.empty());
 
-    while (dir.has_next)
-    {
-        tinydir_file file;
-        tinydir_readfile(&dir, &file);
+    ActivityFactory factory;
+    BaseActivity* activity = factory.createNext();
 
-        printf("%s", file.name);
-        if (file.is_dir)
-        {
-            printf("/");
-        }
-        printf("\n");
-
-        tinydir_next(&dir);
-    }
-
-    tinydir_close(&dir);
+    while (activity) {
+        activities.push_back(activity);
+        activity = factory.createNext();
+    };
 }
