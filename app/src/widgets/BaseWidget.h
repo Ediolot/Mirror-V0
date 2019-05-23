@@ -8,23 +8,23 @@
 #include <string>
 #include <vector>
 #include "../external/tinyxml2/tinyxml2.h"
+#include "../utils/Value.h"
 
 using namespace tinyxml2;
 
 class BaseWidget {
 protected:
-    std::vector<BaseWidget*> widgets;
+    BaseWidget *parent;
+    std::vector<BaseWidget*> children;
 
-    double x;
-    double y;
-    double width; // Target width
-    double height; // Target height
-    double p_width;
-    double p_height;
-    double padding;
+    Value x;
+    Value y;
+    Value width;
+    Value height;
+    Value padding;
 
 public:
-    explicit BaseWidget(const std::string& xmlView);
+    explicit BaseWidget(const std::string& xmlView, BaseWidget* parent = nullptr);
     virtual ~BaseWidget();
 
     void loadView(const std::string& xmlView);
@@ -32,6 +32,9 @@ public:
 
 protected:
     virtual void parseOtherViewOptions(XMLElement *options);
+
+    Value toValue(XMLElement *options, const char* node, const char* attribute, double defaultValue = 0, Value::Type defaultType = Value::Type::NUMERIC) const;
+    std::string toString(XMLElement *options, const char* node, const std::string& defaultValue = "") const;
 };
 
 

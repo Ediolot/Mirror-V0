@@ -7,5 +7,5 @@
         <font family="default" size="16" />
         <text value="Default text" />
     </options>
-    <childs />
+    <children />
 </root>

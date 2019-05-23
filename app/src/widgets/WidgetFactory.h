@@ -12,7 +12,8 @@
 class WidgetFactory {
 public:
     enum Type {
-        DATETIME ,
+        DATETIME,
+        TEXT,
     };
 
 private:
@@ -21,8 +22,8 @@ private:
 public:
     WidgetFactory();
 
-    BaseWidget* createFromName(const std::string& name);
-    BaseWidget* create(Type type);
+    BaseWidget* createFromName(const std::string& name, BaseWidget* parent = nullptr);
+    BaseWidget* create(Type type, BaseWidget* parent = nullptr);
 };
 
 

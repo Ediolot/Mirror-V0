@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
     <options />
-    <childs>
-        <widget type="datetime" x="10" y="10" width="30%" height="40%" />
-    </childs>
+    <children>
+        <widget type="text" x="10" y="10" width="30%" height="40%" />
+    </children>
 </root>

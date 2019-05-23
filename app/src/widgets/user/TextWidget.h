@@ -9,9 +9,16 @@
 #include "../BaseWidget.h"
 
 class TextWidget : public BaseWidget {
-    inline static const std::string DEFAULT_VIEW = "../views/";
+    inline static const std::string DEFAULT_VIEW = "../views/textWidget.xml";
+
+private:
+    std::string txt;
+
 public:
-    explicit TextWidget(const std::string& xmlView, const std::string& txt);
+    explicit TextWidget(const std::string& xmlView = DEFAULT_VIEW, BaseWidget* parent = nullptr);
+
+protected:
+    void parseOtherViewOptions(XMLElement *options) override;
 };
 
 
