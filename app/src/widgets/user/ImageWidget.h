@@ -29,8 +29,9 @@ public:
     explicit ImageWidget(BaseWidget* parent = nullptr);
     virtual ~ImageWidget();
     const std::string& getDefaultViewPath() const override;
-    void setImage(const std::string& path);
     void updateView() override;
+    void setImage(const std::string& path);
+    void setModeFromStr(const std::string& modeStr);
 
 protected:
     void parseViewOptions(XMLElement *element) override;

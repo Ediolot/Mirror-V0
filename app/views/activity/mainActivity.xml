@@ -2,7 +2,7 @@
 <root>
     <options />
     <children>
-        <!-- <widget type="text" x="10" y="10" width="30%" height="40%" /> -->
-        <widget type="image" padding="0" x="0" y="0" width="50%" height="50%" path="d:/Users/jsier/Desktop/MAI/mirror_v0/app/resources/images/lenna.png" mode="0"/>
+        <widget type="text" x="50%" y="0" width="50%" height="50%" txt="Aladdín o Aladdin es una película animada producida por Walt Disney Feature Animation y distribuida por Walt Disney Pictures. Es la trigésima primera cinta en la serie Walt Disney Animated Classics y se realizó en un período conocido como el Renacimiento de Disney. La película se montó bajo la dirección y producción de John Musker y Ron Clements, los guiones de Musker, Clements, Ted Elliot y Terry Rossio, y con Alan Menken como responsable de la banda sonora. Además, cuenta con un amplio reparto coral en el que participaron principalmente Scott Weinger, Robin Williams, Jonathan Freeman y Linda Larkin. El argumento de Aladdín está inspirado en el cuento árabe Aladino"/>
+        <widget type="image" padding="0" x="0" y="0" width="50%" height="50%" path="d:/Users/jsier/Desktop/MAI/mirror_v0/app/resources/images/lenna.png" mode="scale_fit" r="30" g="50" b="70"/>
     </children>
 </root>

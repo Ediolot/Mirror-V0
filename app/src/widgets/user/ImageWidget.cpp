@@ -30,22 +30,24 @@ void ImageWidget::parseViewOptions(XMLElement *element) {
     BaseWidget::parseViewOptions(element);
 
     std::string imagePath = toString(element->FirstChildElement("path"), "value");
-    mode = (FillType)toInt(element->FirstChildElement("mode"), "value", SCALE_ALL);
+    std::string modeStr = toString(element->FirstChildElement("mode"), "value", "scale_all");
     backgroundR = toInt(element->FirstChildElement("background"), "r", -1);
     backgroundG = toInt(element->FirstChildElement("background"), "g", -1);
     backgroundB = toInt(element->FirstChildElement("background"), "b", -1);
     setImage(imagePath);
+    setModeFromStr(modeStr);
 }
 
 void ImageWidget::updateViewOptions(XMLElement *element) {
     BaseWidget::updateViewOptions(element);
 
     std::string imagePath = toString(element, "path");
-    mode = (FillType)toInt(element, "mode", mode);
+    std::string modeStr = toString(element, "mode");
     backgroundR = toInt(element, "r", backgroundR);
     backgroundG = toInt(element, "g", backgroundG);
     backgroundB = toInt(element, "b", backgroundB);
     setImage(imagePath);
+    setModeFromStr(modeStr);
 }
 
 void ImageWidget::setImage(const std::string &path) {
@@ -95,4 +97,14 @@ void ImageWidget::updateView() {
         al_draw_filled_rectangle(rX, rY, rX + rWidth, rY + rHeight, color);
     }
     al_draw_scaled_bitmap(image, 0, 0, bw, bh, dx, dy, dw, dh, 0);
+}
+
+void ImageWidget::setModeFromStr(const std::string &modeStr) {
+    if (modeStr == "scale_all" || modeStr == "SCALE_ALL") {
+        mode = SCALE_ALL;
+    } else if (modeStr == "scale_fit" || modeStr == "SCALE_FIT") {
+        mode = SCALE_FIT;
+    } else if (modeStr == "scale_expand" || modeStr == "SCALE_EXPAND") {
+        mode = SCALE_EXPAND;
+    }
 }

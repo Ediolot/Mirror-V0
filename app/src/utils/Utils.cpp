@@ -93,9 +93,43 @@ std::string Utils::execCmd(const std::string &cmd) {
 }
 
 nlohmann::json Utils::requestJSON(const std::string& url) {
-    const std::string CURL_CMD = "C:\\Users\\PauL\\Documents\\MAI\\HCI\\Programming\\curl-7.65.0\\bin\\curl.exe -A magicmirrory -s"; // TODO
+    const std::string CURL_CMD = "D:\\Programming\\Libs\\curl-7.65.0\\bin\\curl.exe -A magicmirrory -s"; // TODO
     std::string cmd = CURL_CMD + " " + "\"" + url + "\"";
     std::string output = execCmd(cmd);
-    //std::cout << cmd << "\n" << output << std::endl;
     return nlohmann::json::parse(output);
+}
+
+std::string Utils::substrUTF8(const std::string& str, unsigned int start, unsigned int len) {
+    // https://stackoverflow.com/questions/30995246/substring-of-a-stdstring-in-utf-8-c11
+    if (len==0) { return ""; }
+    unsigned int c, i, ix, q, min=std::string::npos, max=std::string::npos;
+    for (q=0, i=0, ix=str.length(); i < ix; i++, q++)
+    {
+        if (q==start){ min=i; }
+        if (q<=start+len || len==std::string::npos){ max=i; }
+
+        c = (unsigned char) str[i];
+        if      (
+            //c>=0   &&
+                c<=127) i+=0;
+        else if ((c & 0xE0) == 0xC0) i+=1;
+        else if ((c & 0xF0) == 0xE0) i+=2;
+        else if ((c & 0xF8) == 0xF0) i+=3;
+            //else if (($c & 0xFC) == 0xF8) i+=4; // 111110bb //byte 5, unnecessary in 4 byte UTF-8
+            //else if (($c & 0xFE) == 0xFC) i+=5; // 1111110b //byte 6, unnecessary in 4 byte UTF-8
+        else return "";//invalid utf8
+    }
+    if (q<=start+len || len==std::string::npos){ max=i; }
+    if (min==std::string::npos || max==std::string::npos) { return ""; }
+    return str.substr(min,max);
+}
+
+void Utils::trim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+        return !std::isspace(ch);
+    }));
+
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
 }

@@ -8,8 +8,10 @@ int main(int argc, char** argv) {
     std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
     std::cout << "Allegro Version: " << Utils::allegroVersion() << std::endl;
 
-    //App app;
-    //app.run();
+    App app;
+    app.run();
+
+    return 0;
 
 
     std::string url_weather = "http://api.openweathermap.org/data/2.5/weather?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";

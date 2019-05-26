@@ -19,6 +19,8 @@ namespace Utils {
     bool startAllegro();
     std::string execCmd(const std::string &cmd);
     nlohmann::json requestJSON(const std::string& url);
+    std::string substrUTF8(const std::string& str, unsigned int start, unsigned int len);
+    void trim(std::string& s);
 }
 
 
