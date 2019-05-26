@@ -89,9 +89,9 @@ std::string Utils::execCmd(const std::string &cmd) {
 }
 
 nlohmann::json Utils::requestJSON(const std::string& url) {
-    const std::string CURL_CMD = "D:\\Programming\\Libs\\curl-7.65.0\\bin\\curl.exe -s"; // TODO
+    const std::string CURL_CMD = "C:\\Users\\PauL\\Documents\\MAI\\HCI\\Programming\\curl-7.65.0\\bin\\curl.exe -A magicmirrory -s"; // TODO
     std::string cmd = CURL_CMD + " " + "\"" + url + "\"";
     std::string output = execCmd(cmd);
-    std::cout << cmd << "\n" << output << std::endl;
+    //std::cout << cmd << "\n" << output << std::endl;
     return nlohmann::json::parse(output);
 }
