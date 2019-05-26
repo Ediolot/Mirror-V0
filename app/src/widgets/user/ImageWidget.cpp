@@ -46,9 +46,12 @@ void ImageWidget::setImage(const std::string &path) {
         al_destroy_bitmap(image);
     }
 
-    const char* t =  "lenna.png";
-    image = al_load_bitmap(t);
-    std::cout << t << " " << image << std::endl;
+    al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
+    ALLEGRO_PATH *p = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
+    al_set_path_filename(p, "lenna.png");
+    image = al_load_bitmap(al_path_cstr(p, '/'));
+    std::cout << al_path_cstr(p, '/') << " " << image << std::endl;
+    al_destroy_path(p);
 }
 
 void ImageWidget::updateView() {
