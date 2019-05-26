@@ -111,6 +111,18 @@ void BaseWidget::loadDefaultView() {
 }
 
 void BaseWidget::updateView() {
+    if (parent) {
+        rX = parent->rX + x.calculate(parent->rWidth);
+        rY = parent->rY + y.calculate(parent->rHeight);
+        rWidth = width.calculate(parent->rWidth);
+        rHeight = height.calculate(parent->rHeight);
+    } else {
+        rX = x.getDouble();
+        rY = y.getDouble();
+        rWidth = width.getDouble();
+        rHeight = height.getDouble();
+    }
+
     for (BaseWidget* child : children) {
         child->updateView();
     }

@@ -23,6 +23,11 @@ protected:
     Value height;
     Value padding;
 
+    double rX;
+    double rY;
+    double rWidth;
+    double rHeight;
+
 public:
     explicit BaseWidget(BaseWidget* parent = nullptr);
     virtual ~BaseWidget();
@@ -32,7 +37,7 @@ public:
     void loadDefaultView();
     void clearView();
 
-    // virtual void updateView(int rY, int rX, int rWidth, int rHeight); // Updates the view
+    virtual void updateView();
 
 protected:
     virtual void parseViewOptions(XMLElement *element);

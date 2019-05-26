@@ -11,7 +11,7 @@ App::App()
     : width(640)
     , height(480)
     , activities()
-    , mainScreenId(-1)
+    , mainActivityId(-1)
     , quit(false)
     , drawingEventQ(nullptr)
     , drawingTimer(nullptr)
@@ -24,7 +24,6 @@ App::App()
     Fonts::getInstance().load();
     Colors::getInstance().load();
     Images::getInstance().load();
-    loadActivities();
 }
 
 App::~App() {
@@ -36,6 +35,7 @@ App::~App() {
 
 void App::run() {
     startAllegroVars();
+    loadActivities();
     std::thread updaterController(&App::updateControllers, this);
     std::thread updaterEvents(&App::updateEvents, this);
     updateViews();
@@ -66,8 +66,8 @@ void App::updateViews() {
         if (ev.type == ALLEGRO_EVENT_TIMER) {
             fps.measure();
             al_clear_to_color(Colors::get(Colors::BLACK));
-            if (mainScreenId > -1) {
-                activities[mainScreenId]->updateView();
+            if (mainActivityId > -1) {
+                activities[mainActivityId]->updateView();
             }
             fps.draw();
             al_flip_display();
@@ -81,8 +81,8 @@ void App::updateControllers() {
     while (!quit.load()) {
         double update = al_get_time();
         double elapsed = update - lastUpdate;
-        if (lastUpdate > 0 && mainScreenId > -1) {
-            //screens[mainScreenId]->updateControllers(elapsed);
+        if (lastUpdate > 0 && mainActivityId > -1) {
+            //screens[mainActivityId]->updateControllers(elapsed);
         }
         lastUpdate = update;
     }
@@ -130,5 +130,9 @@ void App::loadActivities() {
     while (activity) {
         activities.push_back(activity);
         activity = factory.createNext();
+    }
+
+    if (!activities.empty()) {
+        mainActivityId = 0;
     }
 }

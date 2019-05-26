@@ -21,6 +21,8 @@ public:
 
     Type getType() const;
     double getDouble() const;
+
+    double calculate(double original);
 };
 
 

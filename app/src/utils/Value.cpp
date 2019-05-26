@@ -16,3 +16,10 @@ Value::Type Value::getType() const {
 double Value::getDouble() const {
     return number;
 }
+
+double Value::calculate(double original) {
+    if (type == Type::PERCENT) {
+        return number * original;
+    }
+    return number;
+}

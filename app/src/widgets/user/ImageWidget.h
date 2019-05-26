@@ -20,6 +20,7 @@ public:
     virtual ~ImageWidget();
     const std::string& getDefaultViewPath() const override;
     void setImage(const std::string& path);
+    void updateView() override;
 
 protected:
     void parseViewOptions(XMLElement *element) override;

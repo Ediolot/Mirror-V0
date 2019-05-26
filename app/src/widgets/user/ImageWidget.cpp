@@ -3,6 +3,8 @@
 //
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_native_dialog.h>
+#include <iostream>
 #include "ImageWidget.h"
 
 ImageWidget::ImageWidget(BaseWidget *parent)
@@ -30,7 +32,7 @@ void ImageWidget::parseViewOptions(XMLElement *element) {
 void ImageWidget::updateViewOptions(XMLElement *element) {
     BaseWidget::updateViewOptions(element);
 
-    std::string imagePath = toString(element->FirstChildElement("path"), "value");
+    std::string imagePath = toString(element, "path");
     mode = toString(element, "mode", mode);
     setImage(imagePath);
 }
@@ -43,5 +45,13 @@ void ImageWidget::setImage(const std::string &path) {
     if (image) {
         al_destroy_bitmap(image);
     }
-    image = al_load_bitmap(path.c_str());
+
+    const char* t =  "lenna.png";
+    image = al_load_bitmap(t);
+    std::cout << t << " " << image << std::endl;
+}
+
+void ImageWidget::updateView() {
+    BaseWidget::updateView();
+    al_draw_bitmap(image, rX, rY, 0);
 }

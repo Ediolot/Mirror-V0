@@ -25,7 +25,7 @@ class App {
 
     // Screens
     std::vector<BaseActivity*> activities;
-    int mainScreenId;
+    int mainActivityId;
 
     // For the controller loop
     // ALLEGRO_EVENT_QUEUE* drawingEventQ;
