@@ -3,6 +3,6 @@
     <options />
     <children>
         <!-- <widget type="text" x="10" y="10" width="30%" height="40%" /> -->
-        <widget type="image" x="10" y="10" width="30%" height="40%" path="d:/Users/jsier/Desktop/MAI/mirror_v0/app/resources/images/boo.jpg"/>
+        <widget type="image" padding="0" x="0" y="0" width="50%" height="50%" path="d:/Users/jsier/Desktop/MAI/mirror_v0/app/resources/images/lenna.png" mode="0"/>
     </children>
 </root>

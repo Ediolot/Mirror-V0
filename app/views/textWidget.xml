@@ -2,7 +2,7 @@
 <root>
     <options>
         <!-- These are the default options for all of its parameters -->
-        <padding value="10px"/>
+        <padding value="2px"/>
         <size width="100px" height="20px" />
         <pos x="0" y="0"/>
         <font family="default" size="16" />

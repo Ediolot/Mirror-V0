@@ -40,6 +40,7 @@ void BaseWidget::loadView(const std::string &xmlView) {
     for (XMLElement* widget = widgets->FirstChildElement(); widget; widget = widget->NextSiblingElement()) {
         BaseWidget *child = factory.createFromName(widget->Attribute("type"), this);
         child->updateViewOptions(widget);
+        children.push_back(child);
     }
 }
 
@@ -81,14 +82,26 @@ Value BaseWidget::toValue(XMLElement *element, const char *attribute,
     }
 
     int len = strlen(attributeStr);
+    value = strtod(attributeStr, nullptr);
     if (len > 3 && attributeStr[len - 1] == 'x' && attributeStr[len - 2] == 'p') {
-        type = Value::Type::PERCENT;
-    } else {
         type = Value::Type::NUMERIC;
+    } else {
+        type = Value::Type::PERCENT;
+        value /= 100.0;
     }
 
-    value = strtod(attributeStr, nullptr);
     return Value(value, type);
+}
+
+int BaseWidget::toInt(XMLElement *element, const char *attribute, int defaultValue) const {
+    if (!element) {
+        return defaultValue;
+    }
+    const char* attributeStr = element->Attribute(attribute, nullptr);
+    if (!attributeStr) {
+        return defaultValue;
+    }
+    return strtol(attributeStr, nullptr, 10);
 }
 
 std::string BaseWidget::toString(XMLElement *element, const char *attribute, const std::string &defaultValue) const {
@@ -112,18 +125,26 @@ void BaseWidget::loadDefaultView() {
 
 void BaseWidget::updateView() {
     if (parent) {
-        rX = parent->rX + x.calculate(parent->rWidth);
-        rY = parent->rY + y.calculate(parent->rHeight);
-        rWidth = width.calculate(parent->rWidth);
-        rHeight = height.calculate(parent->rHeight);
+        rX = parent->rX + x.calculate(parent->rWidth) + padding.getDouble();
+        rY = parent->rY + y.calculate(parent->rHeight) + padding.getDouble();
+        rWidth = width.calculate(parent->rWidth) - padding.getDouble() * 2;
+        rHeight = height.calculate(parent->rHeight) - padding.getDouble() * 2;
     } else {
-        rX = x.getDouble();
-        rY = y.getDouble();
-        rWidth = width.getDouble();
-        rHeight = height.getDouble();
+        rX = x.getDouble() + padding.getDouble();
+        rY = y.getDouble() + padding.getDouble();
+        rWidth = width.getDouble() - padding.getDouble() * 2;
+        rHeight = height.getDouble() - padding.getDouble() * 2;
     }
 
     for (BaseWidget* child : children) {
         child->updateView();
     }
+}
+
+void BaseWidget::setWidth(double value, Value::Type type) {
+    width = Value(value, type);
+}
+
+void BaseWidget::setHeight(double value, Value::Type type) {
+    height = Value(value, type);
 }

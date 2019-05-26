@@ -128,6 +128,8 @@ void App::loadActivities() {
     BaseActivity *activity = factory.createNext();
 
     while (activity) {
+        activity->setWidth(width);
+        activity->setHeight(height);
         activities.push_back(activity);
         activity = factory.createNext();
     }

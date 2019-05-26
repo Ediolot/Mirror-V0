@@ -8,6 +8,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
 #include "Utils.h"
 #include <cstdio>
 #include <iostream>
@@ -62,6 +63,9 @@ bool Utils::startAllegro() {
     });
     initAllegroModule("Allegro audio codec...", ok, [](){
         return al_init_acodec_addon();
+    });
+    initAllegroModule("Allegro image...", ok, [](){
+        return al_init_image_addon();
     });
     initAllegroModule("Allegro reserve samples...", ok, [](){
         return al_reserve_samples(1);

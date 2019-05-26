@@ -30,5 +30,5 @@ BaseWidget *WidgetFactory::createFromName(const std::string &name, BaseWidget* p
     if (name.empty()) { // TODO exception
         std::cerr << "Error invalid name" << std::endl;
     }
-    return create(mapping.at(name)); // TODO Check if it does not exist
+    return create(mapping.at(name), parent); // TODO Check if it does not exist
 }

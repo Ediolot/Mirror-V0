@@ -10,10 +10,20 @@
 #include "../BaseWidget.h"
 
 class ImageWidget : public BaseWidget {
+public:
+    enum FillType {
+        SCALE_FIT = 0,
+        SCALE_ALL = 1,
+        SCALE_EXPAND = 2,
+    };
 
+private:
     inline static const std::string DEFAULT_VIEW = "../views/imageWidget.xml";
     ALLEGRO_BITMAP *image;
-    std::string mode;
+    FillType mode;
+    int backgroundR;
+    int backgroundG;
+    int backgroundB;
 
 public:
     explicit ImageWidget(BaseWidget* parent = nullptr);

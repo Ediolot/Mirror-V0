@@ -39,6 +39,9 @@ public:
 
     virtual void updateView();
 
+    void setWidth(double value, Value::Type type = Value::Type::NUMERIC);
+    void setHeight(double value, Value::Type type = Value::Type::NUMERIC);
+
 protected:
     virtual void parseViewOptions(XMLElement *element);
     virtual void updateViewOptions(XMLElement *element);
@@ -46,6 +49,7 @@ protected:
     Value toValue(XMLElement *element, const char* attribute, double defaultValue = 0, Value::Type defaultType = Value::Type::NUMERIC) const;
     Value toValue(XMLElement *element, const char* attribute, const Value& defaultValue) const;
     std::string toString(XMLElement *element, const char *attribute, const std::string& defaultValue = "") const;
+    int toInt(XMLElement *element, const char *attribute, int defaultValue = 0) const;
 };
 
 
