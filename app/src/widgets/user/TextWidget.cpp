@@ -5,12 +5,25 @@
 #include <iostream>
 #include "TextWidget.h"
 
-TextWidget::TextWidget(const std::string &xmlView, BaseWidget *parent)
-    : BaseWidget(xmlView, parent)
+TextWidget::TextWidget(BaseWidget *parent)
+    : BaseWidget(parent)
     , txt("")
 {}
 
-void TextWidget::parseOtherViewOptions(XMLElement *options) {
-    txt = toString(options, "text");
-    std::cout << "txt: " << txt << std::endl;
+void TextWidget::parseViewOptions(XMLElement *element) {
+    BaseWidget::parseViewOptions(element);
+
+    txt = toString(element->FirstChildElement("text"), "value");
+    // TODO parse font
+}
+
+void TextWidget::updateViewOptions(XMLElement *element) {
+    BaseWidget::updateViewOptions(element);
+
+    txt = toString(element, "value", txt);
+    // TODO font
+}
+
+const std::string& TextWidget::getDefaultViewPath() const {
+    return DEFAULT_VIEW;
 }

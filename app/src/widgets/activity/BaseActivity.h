@@ -11,7 +11,7 @@
 
 class BaseActivity : public BaseWidget {
 public:
-    explicit BaseActivity(const std::string& xmlView);
+    explicit BaseActivity();
     virtual ~BaseActivity();
 };
 

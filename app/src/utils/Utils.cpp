@@ -9,6 +9,13 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "Utils.h"
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
+#include <json.h>
 
 std::string Utils::allegroVersion() {
     uint32_t version = al_get_allegro_version();
@@ -22,7 +29,6 @@ std::string Utils::allegroVersion() {
            std::to_string(revision) + "." +
            std::to_string(release);
 }
-
 
 void Utils::matToBitmapRGB888(const cv::Mat& mat, ALLEGRO_BITMAP* bitmap) {
     assert(mat.channels() == 3);
@@ -67,4 +73,25 @@ bool Utils::startAllegro() {
     });
 
     return ok;
+}
+
+std::string Utils::execCmd(const std::string &cmd) {
+    std::array<char, 256> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
+nlohmann::json Utils::requestJSON(const std::string& url) {
+    const std::string CURL_CMD = "D:\\Programming\\Libs\\curl-7.65.0\\bin\\curl.exe -s"; // TODO
+    std::string cmd = CURL_CMD + " " + "\"" + url + "\"";
+    std::string output = execCmd(cmd);
+    std::cout << cmd << "\n" << output << std::endl;
+    return nlohmann::json::parse(output);
 }

@@ -4,6 +4,10 @@
 
 #include "MainActivity.h"
 
-MainActivity::MainActivity(const std::string &xmlView)
-    : BaseActivity(xmlView)
+MainActivity::MainActivity()
+    : BaseActivity()
 {}
+
+const std::string &MainActivity::getDefaultViewPath() const {
+    return DEFAULT_VIEW;
+}

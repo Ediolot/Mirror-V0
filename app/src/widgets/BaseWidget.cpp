@@ -3,11 +3,12 @@
 //
 
 #include <iostream>
+#include <sstream>
 #include "BaseWidget.h"
 #include "WidgetFactory.h"
 
 
-BaseWidget::BaseWidget(const std::string &xmlView, BaseWidget* parent)
+BaseWidget::BaseWidget(BaseWidget* parent)
     : parent(parent)
     , children()
     , x(0)
@@ -15,9 +16,7 @@ BaseWidget::BaseWidget(const std::string &xmlView, BaseWidget* parent)
     , width(0)
     , height(0)
     , padding(0)
-{
-    loadView(xmlView);
-}
+{}
 
 BaseWidget::~BaseWidget() {
     clearView();
@@ -31,20 +30,17 @@ void BaseWidget::loadView(const std::string &xmlView) {
     XMLDocument doc;
     doc.LoadFile(xmlView.c_str());
 
+    // ---- Parse (normally default) view options for this widget from the view file ----
+    XMLElement *options = doc.FirstChildElement("root")->FirstChildElement("options"); // TODO exception if not found
+    parseViewOptions(options);
+
+    // ---- Load children and modify their viewing options as specified in this view file ----
     WidgetFactory factory;
     XMLElement *widgets = doc.FirstChildElement("root")->FirstChildElement("children"); // TODO exception if not found
     for (XMLElement* widget = widgets->FirstChildElement(); widget; widget = widget->NextSiblingElement()) {
-        factory.createFromName(widget->Attribute("type"), this);
+        BaseWidget *child = factory.createFromName(widget->Attribute("type"), this);
+        child->updateViewOptions(widget);
     }
-
-    XMLElement *options = doc.FirstChildElement("root")->FirstChildElement("options"); // TODO exception if not found
-    x = toValue(options, "pos", "x");
-    y = toValue(options, "pos", "y");
-    width = toValue(options, "size", "width");
-    height = toValue(options, "size", "height");
-    padding = toValue(options, "padding", "value");
-
-    parseOtherViewOptions(options);
 }
 
 void BaseWidget::clearView() {
@@ -53,17 +49,28 @@ void BaseWidget::clearView() {
     }
 }
 
-void BaseWidget::parseOtherViewOptions(XMLElement *options) {
-    ;
+void BaseWidget::parseViewOptions(XMLElement *element) {
+    x = toValue(element->FirstChildElement("pos"), "x");
+    y = toValue(element->FirstChildElement("pos"), "y");
+    width = toValue(element->FirstChildElement("size"), "width");
+    height = toValue(element->FirstChildElement("size"), "height");
+    padding = toValue(element->FirstChildElement("padding"), "value");
 }
 
-Value BaseWidget::toValue(XMLElement *options, const char *node, const char *attribute,
+void BaseWidget::updateViewOptions(XMLElement *element) {
+    x = toValue(element, "x", x);
+    y = toValue(element, "y", y);
+    width = toValue(element, "width", width);
+    height = toValue(element, "height", height);
+    padding = toValue(element, "padding", padding);
+}
+
+Value BaseWidget::toValue(XMLElement *element, const char *attribute,
                           double defaultValue, Value::Type defaultType) const {
 
     double value = defaultValue;
     Value::Type type = defaultType;
 
-    XMLElement* element = options->FirstChildElement(node);
     if (!element) {
         return Value(value, type);
     }
@@ -84,10 +91,27 @@ Value BaseWidget::toValue(XMLElement *options, const char *node, const char *att
     return Value(value, type);
 }
 
-std::string BaseWidget::toString(XMLElement *options, const char *node, const std::string &defaultValue) const {
-    XMLElement* element = options->FirstChildElement(node);
+std::string BaseWidget::toString(XMLElement *element, const char *attribute, const std::string &defaultValue) const {
     if (!element) {
         return defaultValue;
     }
-    return element->GetText();
+    const char* attributeStr = element->Attribute(attribute, nullptr);
+    if (!attributeStr) {
+        return defaultValue;
+    }
+    return std::string(attributeStr);
+}
+
+Value BaseWidget::toValue(XMLElement *element, const char *attribute, const Value& value) const {
+    return toValue(element, attribute, value.getDouble(), value.getType());
+}
+
+void BaseWidget::loadDefaultView() {
+    loadView(getDefaultViewPath());
+}
+
+void BaseWidget::updateView() {
+    for (BaseWidget* child : children) {
+        child->updateView();
+    }
 }

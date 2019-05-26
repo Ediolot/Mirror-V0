@@ -7,13 +7,9 @@
 #include "BaseActivity.h"
 #include "../WidgetFactory.h"
 
-using namespace tinyxml2;
-
-BaseActivity::BaseActivity(const std::string &xmlView)
-    : BaseWidget(xmlView)
-{
-    std::cout << "Created activity: " << xmlView << std::endl;
-}
+BaseActivity::BaseActivity()
+    : BaseWidget()
+{}
 
 BaseActivity::~BaseActivity() {
     ;

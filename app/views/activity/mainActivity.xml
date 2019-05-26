@@ -2,6 +2,7 @@
 <root>
     <options />
     <children>
-        <widget type="text" x="10" y="10" width="30%" height="40%" />
+        <!-- <widget type="text" x="10" y="10" width="30%" height="40%" /> -->
+        <widget type="image" x="10" y="10" width="30%" height="40%" path="../resources/images/lenna.png"/>
     </children>
 </root>

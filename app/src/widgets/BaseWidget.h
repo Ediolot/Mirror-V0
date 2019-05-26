@@ -24,17 +24,23 @@ protected:
     Value padding;
 
 public:
-    explicit BaseWidget(const std::string& xmlView, BaseWidget* parent = nullptr);
+    explicit BaseWidget(BaseWidget* parent = nullptr);
     virtual ~BaseWidget();
 
+    virtual const std::string& getDefaultViewPath() const = 0;
     void loadView(const std::string& xmlView);
+    void loadDefaultView();
     void clearView();
 
-protected:
-    virtual void parseOtherViewOptions(XMLElement *options);
+    // virtual void updateView(int rY, int rX, int rWidth, int rHeight); // Updates the view
 
-    Value toValue(XMLElement *options, const char* node, const char* attribute, double defaultValue = 0, Value::Type defaultType = Value::Type::NUMERIC) const;
-    std::string toString(XMLElement *options, const char* node, const std::string& defaultValue = "") const;
+protected:
+    virtual void parseViewOptions(XMLElement *element);
+    virtual void updateViewOptions(XMLElement *element);
+
+    Value toValue(XMLElement *element, const char* attribute, double defaultValue = 0, Value::Type defaultType = Value::Type::NUMERIC) const;
+    Value toValue(XMLElement *element, const char* attribute, const Value& defaultValue) const;
+    std::string toString(XMLElement *element, const char *attribute, const std::string& defaultValue = "") const;
 };
 
 

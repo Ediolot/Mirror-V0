@@ -5,6 +5,7 @@
 #include <tinydir.h>
 #include "App.h"
 #include "widgets/activity/ActivityFactory.h"
+#include "resourceLoaders/Images.h"
 
 App::App()
     : width(640)
@@ -22,6 +23,7 @@ App::App()
     Utils::startAllegro();
     Fonts::getInstance().load();
     Colors::getInstance().load();
+    Images::getInstance().load();
     loadActivities();
 }
 
@@ -65,7 +67,7 @@ void App::updateViews() {
             fps.measure();
             al_clear_to_color(Colors::get(Colors::BLACK));
             if (mainScreenId > -1) {
-                //screens[mainScreenId]->updateViews();
+                activities[mainScreenId]->updateView();
             }
             fps.draw();
             al_flip_display();
@@ -123,10 +125,10 @@ void App::loadActivities() {
     assert(activities.empty());
 
     ActivityFactory factory;
-    BaseActivity* activity = factory.createNext();
+    BaseActivity *activity = factory.createNext();
 
     while (activity) {
         activities.push_back(activity);
         activity = factory.createNext();
-    };
+    }
 }

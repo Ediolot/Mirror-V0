@@ -9,10 +9,12 @@
 #include "../BaseActivity.h"
 
 class MainActivity : public BaseActivity {
+public:
     inline static const std::string DEFAULT_VIEW = "../views/activity/mainActivity.xml";
 
 public:
-    explicit MainActivity(const std::string& xmlView = DEFAULT_VIEW);
+    explicit MainActivity();
+    const std::string& getDefaultViewPath() const override;
 };
 
 

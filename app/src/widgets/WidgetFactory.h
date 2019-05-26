@@ -14,6 +14,7 @@ public:
     enum Type {
         DATETIME,
         TEXT,
+        IMAGE,
     };
 
 private:

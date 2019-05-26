@@ -11,10 +11,13 @@ ActivityFactory::ActivityFactory()
 {}
 
 BaseActivity *ActivityFactory::create(ActivityFactory::Type type) {
+    BaseActivity *activity = nullptr;
     switch(type) {
-        case Type::MAIN_ACTIVITY: return new MainActivity();
+        case Type::MAIN_ACTIVITY: activity = new MainActivity(); break;
         default: return nullptr;
     }
+    activity->loadDefaultView();
+    return activity;
 }
 
 BaseActivity *ActivityFactory::createNext() {

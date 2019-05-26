@@ -6,8 +6,8 @@
 #include <string>
 #include <allegro5/allegro_font.h>
 #include "FPSMetric.h"
-#include "../resources/Fonts.h"
-#include "../resources/Colors.h"
+#include "../resourceLoaders/Fonts.h"
+#include "../resourceLoaders/Colors.h"
 
 void FPSMetric::init() {
     start = al_get_time();

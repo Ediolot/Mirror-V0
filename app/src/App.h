@@ -9,9 +9,9 @@
 #include <thread>
 #include <iostream>
 #include <atomic>
-#include "resources/Fonts.h"
+#include "resourceLoaders/Fonts.h"
+#include "resourceLoaders/Colors.h"
 #include "utils/Utils.h"
-#include "resources/Colors.h"
 #include "utils/FPSMetric.h"
 #include "widgets/activity/BaseActivity.h"
 #include "widgets/activity/ActivityFactory.h"
