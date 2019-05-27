@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <options>
+        <!-- These are the default options for all of its parameters -->
+        <padding value="2px"/>
+        <size width="100px" height="100px" />
+        <pos x="0" y="0"/>
+    </options>
+    <children>
+        <widget type="text" id="0" x="0" y="0" width="100%" height="50%" text="08 / FEB / 96" font-size="3" text-align="2" align="2"/>
+        <widget type="text" id="1" x="0" y="50%" width="100%" height="30%" text="06:36" font-size="2" text-align="2" align="2"/>
+    </children>
+</root>

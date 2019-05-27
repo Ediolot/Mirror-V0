@@ -14,7 +14,9 @@ class TextWidget : public BaseWidget {
 
     inline static const std::string DEFAULT_VIEW = "../views/textWidget.xml";
     std::string txt;
-    Fonts::Rid font_id;
+    Fonts::Rid fontId;
+    Fonts::Size fontSize;
+    int alignment;
 
 public:
     explicit TextWidget(BaseWidget* parent = nullptr);
@@ -22,7 +24,7 @@ public:
     const std::string& getDefaultViewPath() const override;
     void updateView() override;
     void setText(const std::string& txt);
-    void setFontFromStr(const std::string& family, int size);
+    void setFontFromStr(const std::string& family);
 
 private:
     std::string drawTextLine(double x, double y, std::string txt, const std::string& end = "") const;

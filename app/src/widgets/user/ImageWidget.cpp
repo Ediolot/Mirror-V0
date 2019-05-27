@@ -13,9 +13,6 @@ ImageWidget::ImageWidget(BaseWidget *parent)
     : BaseWidget(parent)
     , image(nullptr)
     , mode(SCALE_ALL)
-    , backgroundR(-1)
-    , backgroundG(-1)
-    , backgroundB(-1)
 {}
 
 ImageWidget::~ImageWidget() {
@@ -31,9 +28,6 @@ void ImageWidget::parseViewOptions(XMLElement *element) {
 
     std::string imagePath = toString(element->FirstChildElement("path"), "value");
     std::string modeStr = toString(element->FirstChildElement("mode"), "value", "scale_all");
-    backgroundR = toInt(element->FirstChildElement("background"), "r", -1);
-    backgroundG = toInt(element->FirstChildElement("background"), "g", -1);
-    backgroundB = toInt(element->FirstChildElement("background"), "b", -1);
     setImage(imagePath);
     setModeFromStr(modeStr);
 }
@@ -43,9 +37,6 @@ void ImageWidget::updateViewOptions(XMLElement *element) {
 
     std::string imagePath = toString(element, "path");
     std::string modeStr = toString(element, "mode");
-    backgroundR = toInt(element, "r", backgroundR);
-    backgroundG = toInt(element, "g", backgroundG);
-    backgroundB = toInt(element, "b", backgroundB);
     setImage(imagePath);
     setModeFromStr(modeStr);
 }
@@ -91,10 +82,6 @@ void ImageWidget::updateView() {
         case SCALE_EXPAND:
             // TODO
             break;
-    }
-    if (backgroundR >= 0 && backgroundG >= 0 && backgroundB >= 0) {
-        ALLEGRO_COLOR color = al_map_rgb(backgroundR, backgroundG, backgroundB);
-        al_draw_filled_rectangle(rX, rY, rX + rWidth, rY + rHeight, color);
     }
     al_draw_scaled_bitmap(image, 0, 0, bw, bh, dx, dy, dw, dh, 0);
 }

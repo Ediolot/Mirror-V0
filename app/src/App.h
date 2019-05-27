@@ -17,6 +17,8 @@
 #include "widgets/activity/ActivityFactory.h"
 
 class App {
+    static inline const int TICKS_PER_SECOND = 4;
+    static inline const double TICK_TIME = 1.0 / TICKS_PER_SECOND;
 
     // Other vars
     int width;

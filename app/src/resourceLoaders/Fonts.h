@@ -9,7 +9,7 @@
 
 class Fonts {
     static const int ELEMENTS = 1;
-    static const int SIZES = 5;
+    static const int SIZES = 7;
     ALLEGRO_FONT* fonts[ELEMENTS * SIZES];
     
 public:
@@ -18,7 +18,7 @@ public:
     };
 
     enum Size {
-        PX8 = 0, PX16 = 1, PX32 = 2, PX64 = 3, PX128 = 4
+        PX8 = 0, PX16 = 1, PX24 = 2, PX32 = 3, PX40 = 4, PX64 = 5, PX128 = 6
     };
 
     static Fonts& getInstance() {

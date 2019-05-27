@@ -7,6 +7,7 @@
         <pos x="0" y="0"/>
         <font family="default" size="16" />
         <text value="Default text" />
+        <text-align value="0" />
     </options>
     <children />
 </root>

@@ -8,8 +8,8 @@
 #include "resourceLoaders/Images.h"
 
 App::App()
-    : width(640)
-    , height(480)
+    : width(1280)
+    , height(1024)
     , activities()
     , mainActivityId(-1)
     , quit(false)
@@ -49,7 +49,7 @@ void App::updateEvents() {
         al_wait_for_event(eventQ, &ev);
 
         switch (ev.type) {
-            case ALLEGRO_EVENT_DISPLAY_CLOSE: quit.store(true); break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE: std::cout << "ev" << std::endl; quit.store(true); break;
             default: break;
         }
     }
@@ -76,13 +76,45 @@ void App::updateViews() {
 }
 
 void App::updateControllers() {
-    double lastUpdate = -1; // In seconds
+    double lastUpdate = al_get_time(); // In seconds
+    double elapsedRealTime = 0;
+    double elapsedT = 0;
+    double elapsedS = 0;
+    double elapsedM = 0;
+    double elapsedH = 0;
 
     while (!quit.load()) {
         double update = al_get_time();
-        double elapsed = update - lastUpdate;
-        if (lastUpdate > 0 && mainActivityId > -1) {
-            //screens[mainActivityId]->updateControllers(elapsed);
+        elapsedRealTime = update - lastUpdate;
+
+        if (mainActivityId > -1) {
+            BaseWidget::UpdateRate rate = BaseWidget::UpdateRate::NONE;
+            elapsedT += elapsedRealTime;
+            elapsedS += elapsedRealTime;
+            elapsedM += elapsedRealTime;
+            elapsedH += elapsedRealTime;
+
+            if (elapsedT > TICK_TIME) {
+                elapsedT -= TICK_TIME;
+                rate = BaseWidget::UpdateRate::EACH_TICK;
+            }
+            if (elapsedS > 1.0) {
+                elapsedS -= 1.0;
+                rate = BaseWidget::UpdateRate::EACH_SECOND;
+            }
+            if (elapsedM > 60.0) {
+                elapsedM -= 60.0;
+                rate = BaseWidget::UpdateRate::EACH_MINUTE;
+            }
+            if (elapsedH > 3600.0) {
+                elapsedH -= 3600.0;
+                rate = BaseWidget::UpdateRate::EACH_HOUR;
+            }
+
+            if (rate != BaseWidget::UpdateRate::NONE) {
+                activities[mainActivityId]->updateControllerInter(rate);
+            }
+            activities[mainActivityId]->updateControllerRT(elapsedRealTime);
         }
         lastUpdate = update;
     }

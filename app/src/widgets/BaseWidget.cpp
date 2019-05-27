@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <allegro5/color.h>
+#include <allegro5/allegro_primitives.h>
 #include "BaseWidget.h"
 #include "WidgetFactory.h"
 
@@ -16,6 +18,12 @@ BaseWidget::BaseWidget(BaseWidget* parent)
     , width(0)
     , height(0)
     , padding(0)
+    , id(-1)
+    , backgroundR(-1)
+    , backgroundG(-1)
+    , backgroundB(-1)
+    , vAlign(0)
+    , hAlign(0)
 {}
 
 BaseWidget::~BaseWidget() {
@@ -56,14 +64,25 @@ void BaseWidget::parseViewOptions(XMLElement *element) {
     width = toValue(element->FirstChildElement("size"), "width");
     height = toValue(element->FirstChildElement("size"), "height");
     padding = toValue(element->FirstChildElement("padding"), "value");
+    backgroundR = toInt(element->FirstChildElement("background"), "r", -1);
+    backgroundG = toInt(element->FirstChildElement("background"), "g", -1);
+    backgroundB = toInt(element->FirstChildElement("background"), "b", -1);
+    vAlign = toInt(element->FirstChildElement("valign"), "value", 0);
+    hAlign = toInt(element->FirstChildElement("halign"), "value", 0);
 }
 
 void BaseWidget::updateViewOptions(XMLElement *element) {
+    id = toInt(element, "id", id);
     x = toValue(element, "x", x);
     y = toValue(element, "y", y);
     width = toValue(element, "width", width);
     height = toValue(element, "height", height);
     padding = toValue(element, "padding", padding);
+    backgroundR = toInt(element, "r", backgroundR);
+    backgroundG = toInt(element, "g", backgroundG);
+    backgroundB = toInt(element, "b", backgroundB);
+    vAlign = toInt(element, "valign", vAlign);
+    hAlign = toInt(element, "halign", hAlign);
 }
 
 Value BaseWidget::toValue(XMLElement *element, const char *attribute,
@@ -136,6 +155,24 @@ void BaseWidget::updateView() {
         rHeight = height.getDouble() - padding.getDouble() * 2;
     }
 
+    if (hAlign == 2) {
+        rX -= rWidth / 2;
+    }
+    else if (hAlign == 1) {
+        rX -= rWidth;
+    }
+    if (vAlign == 2) {
+        rY -= rHeight / 2;
+    }
+    else if (vAlign == 1) {
+        rY -= rHeight;
+    }
+
+    if (backgroundR >= 0 && backgroundG >= 0 && backgroundB >= 0) {
+        ALLEGRO_COLOR color = al_map_rgb(backgroundR, backgroundG, backgroundB);
+        al_draw_filled_rectangle(rX, rY, rX + rWidth, rY + rHeight, color);
+    }
+
     for (BaseWidget* child : children) {
         child->updateView();
     }
@@ -147,4 +184,33 @@ void BaseWidget::setWidth(double value, Value::Type type) {
 
 void BaseWidget::setHeight(double value, Value::Type type) {
     height = Value(value, type);
+}
+
+int BaseWidget::getId() const {
+    return id;
+}
+
+BaseWidget *BaseWidget::getChild(int id) {
+    for (BaseWidget *child : children) {
+        if (child->getId() == id) {
+            return child;
+        }
+    }
+    return nullptr;
+}
+
+void BaseWidget::updateControllerRT(double elapsed) {
+    for (BaseWidget *child : children) {
+        child->updateControllerRT(elapsed);
+    }
+}
+
+void BaseWidget::updateControllerInter(UpdateRate rate) {
+    for (BaseWidget *child : children) {
+        child->updateControllerInter(rate);
+    }
+}
+
+bool BaseWidget::rateIs(BaseWidget::UpdateRate rate, BaseWidget::UpdateRate reference) const {
+    return rate >= reference;
 }

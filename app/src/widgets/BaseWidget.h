@@ -14,6 +14,7 @@ using namespace tinyxml2;
 
 class BaseWidget {
 protected:
+    int id;
     BaseWidget *parent;
     std::vector<BaseWidget*> children;
 
@@ -22,13 +23,28 @@ protected:
     Value width;
     Value height;
     Value padding;
+    int backgroundR;
+    int backgroundG;
+    int backgroundB;
 
     double rX;
     double rY;
     double rWidth;
     double rHeight;
 
+    int vAlign;
+    int hAlign;
+
 public:
+    enum UpdateRate {
+        NONE,
+        REAL_TIME,
+        EACH_TICK,
+        EACH_SECOND,
+        EACH_MINUTE,
+        EACH_HOUR,
+    };
+
     explicit BaseWidget(BaseWidget* parent = nullptr);
     virtual ~BaseWidget();
 
@@ -38,9 +54,15 @@ public:
     void clearView();
 
     virtual void updateView();
+    virtual void updateControllerRT(double elapsed); // Real time
+    virtual void updateControllerInter(UpdateRate rate); // Interval
+
+    int getId() const;
 
     void setWidth(double value, Value::Type type = Value::Type::NUMERIC);
     void setHeight(double value, Value::Type type = Value::Type::NUMERIC);
+
+    BaseWidget* getChild(int id);
 
 protected:
     virtual void parseViewOptions(XMLElement *element);
@@ -50,6 +72,8 @@ protected:
     Value toValue(XMLElement *element, const char* attribute, const Value& defaultValue) const;
     std::string toString(XMLElement *element, const char *attribute, const std::string& defaultValue = "") const;
     int toInt(XMLElement *element, const char *attribute, int defaultValue = 0) const;
+
+    bool rateIs(UpdateRate rate, UpdateRate reference) const;
 };
 
 

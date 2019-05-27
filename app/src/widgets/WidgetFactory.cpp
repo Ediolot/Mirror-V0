@@ -6,6 +6,7 @@
 #include "WidgetFactory.h"
 #include "user/TextWidget.h"
 #include "user/ImageWidget.h"
+#include "user/DatetimeWidget.h"
 
 WidgetFactory::WidgetFactory()
         : mapping()
@@ -20,6 +21,7 @@ BaseWidget *WidgetFactory::create(WidgetFactory::Type type, BaseWidget* parent) 
     switch(type) {
         case Type::TEXT: widget = new TextWidget(parent); break;
         case Type::IMAGE: widget = new ImageWidget(parent); break;
+        case Type::DATETIME: widget = new DatetimeWidget(parent); break;
         default: return nullptr;
     }
     widget->loadDefaultView();

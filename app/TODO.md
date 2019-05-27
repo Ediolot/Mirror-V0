@@ -1,0 +1,1 @@
+* Lock widgets when drawing / updating

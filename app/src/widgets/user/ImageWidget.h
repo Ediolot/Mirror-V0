@@ -21,9 +21,6 @@ private:
     inline static const std::string DEFAULT_VIEW = "../views/imageWidget.xml";
     ALLEGRO_BITMAP *image;
     FillType mode;
-    int backgroundR;
-    int backgroundG;
-    int backgroundB;
 
 public:
     explicit ImageWidget(BaseWidget* parent = nullptr);
