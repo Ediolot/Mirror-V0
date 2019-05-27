@@ -13,7 +13,7 @@
 class TextWidget : public BaseWidget {
     inline static const std::string DEFAULT_VIEW = "../views/textWidget.xml";
     std::string txt;
-    Fonts::Rid fontId;
+    Fonts::Rid fontFamily;
     Fonts::Size fontSize;
     Properties::ALIGN alignment;
 

@@ -40,6 +40,7 @@ public:
         EACH_SECOND,
         EACH_MINUTE,
         EACH_HOUR,
+        EACH_12HOUR,
     };
 
     explicit BaseWidget(BaseWidget* parent = nullptr);

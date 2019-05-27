@@ -6,6 +6,7 @@
 #define MIRROR_APP_FONTS_H
 
 #include <allegro5/allegro_font.h>
+#include <iostream>
 
 class Fonts {
 public:
@@ -29,7 +30,7 @@ public:
     }
 
     static const ALLEGRO_FONT* get(Rid id, Size size = PX16) {
-        return Fonts::getInstance().fonts[id + size];
+        return Fonts::getInstance().fonts[id * N_FONTS_SIZES + size];
     }
 
     Fonts(const Fonts&) = delete;
@@ -41,6 +42,7 @@ public:
     void free();
 
 private:
+    void loadSingle(Rid rid, const char* path);
     Fonts();
     virtual ~Fonts();
 };

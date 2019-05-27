@@ -13,7 +13,7 @@
 TextWidget::TextWidget(BaseWidget *parent)
     : BaseWidget(parent)
     , txt("Default text")
-    , fontId(Fonts::DEFAULT_FONT)
+    , fontFamily(Fonts::DEFAULT_FONT)
     , fontSize(Fonts::Size::PX16)
     , alignment(Properties::ALIGN::LEFT)
 {}
@@ -23,6 +23,7 @@ void TextWidget::parseViewOptions(XMLElement *element) {
 
     txt = Properties::Parser::string(element, "text", txt);
     fontSize = Properties::Parser::fontSize(element, "font-size", fontSize);
+    fontFamily = Properties::Parser::fontFamily(element, "font-family", fontFamily);
     alignment = Properties::Parser::align(element, "text-align", alignment);
 }
 
@@ -33,7 +34,7 @@ const std::string& TextWidget::getDefaultViewPath() const {
 void TextWidget::updateView() {
     BaseWidget::updateView();
 
-    const ALLEGRO_FONT* font = Fonts::get(fontId, fontSize);
+    const ALLEGRO_FONT* font = Fonts::get(fontFamily, fontSize);
     std::string remaining = txt;
 
 
@@ -56,7 +57,7 @@ void TextWidget::updateView() {
 }
 
 std::string TextWidget::drawTextLine(double x, double y, std::string s, const std::string& end) const {
-    double width = al_get_text_width(Fonts::get(fontId, fontSize), s.c_str());
+    double width = al_get_text_width(Fonts::get(fontFamily, fontSize), s.c_str());
 
     int len = std::floor(s.size() * rWidth / width);
     std::string sub;
@@ -64,7 +65,7 @@ std::string TextWidget::drawTextLine(double x, double y, std::string s, const st
     do  {
         sub = Utils::substrUTF8(s, 0, len);
         Utils::trim(sub);
-        width = al_get_text_width(Fonts::get(fontId, fontSize), sub.c_str());
+        width = al_get_text_width(Fonts::get(fontFamily, fontSize), sub.c_str());
         len--;
     } while (width > rWidth);
 
@@ -86,7 +87,8 @@ std::string TextWidget::drawTextLine(double x, double y, std::string s, const st
         x += rWidth / 2;
         allegro_align = ALLEGRO_ALIGN_CENTER;
     }
-    al_draw_text(Fonts::get(fontId, fontSize), Colors::get(Colors::WHITE), x, y, allegro_align, sub.c_str());
+
+    al_draw_text(Fonts::get(fontFamily, fontSize), Colors::get(Colors::WHITE), x, y, allegro_align, sub.c_str());
     return s;
 }
 

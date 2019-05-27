@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
     <children>
-        <widget type="datetime" x="98%" y="3%" width="220px" height="100px"  halign="right" valign="top"/>
+        <widget type="datetime" x="98%" y="3%" width="300px" height="150px"  halign="right" valign="top"/>
     </children>
 </root>

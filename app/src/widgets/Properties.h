@@ -32,6 +32,7 @@ namespace Properties {
         inline const char* type[N_ELEMENTS_TYPE] = {"none", "text", "image", "datetime"};
         inline const char* align[N_ELEMENTS_ALIGN] = {"left", "right", "center", "top", "bottom"};
         inline const char* fontSize[Fonts::N_FONTS_SIZES] = {"tiny", "small", "normal", "big", "large", "huge", "enormous"};
+        inline const char* fontFamily[Fonts::N_FONTS] = {"default"};
         inline const char* scaleType[N_ELEMENTS_SCALE_TYPE] = {"scale_all", "scale_fit", "scale_expand"};
     }
 
@@ -46,6 +47,7 @@ namespace Properties {
         TYPE type(XMLElement* element, const char* attribute, TYPE defValue);
         ALIGN align(XMLElement* element, const char* attribute, ALIGN defValue);
         Fonts::Size fontSize(XMLElement* element, const char* attribute, Fonts::Size defValue);
+        Fonts::Rid fontFamily(XMLElement* element, const char* attribute, Fonts::Rid defValue);
         SCALE_TYPE scaleType(XMLElement* element, const char* attribute, SCALE_TYPE defValue);
     }
 }

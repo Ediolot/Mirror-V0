@@ -49,7 +49,7 @@ void App::updateEvents() {
         al_wait_for_event(eventQ, &ev);
 
         switch (ev.type) {
-            case ALLEGRO_EVENT_DISPLAY_CLOSE: std::cout << "ev" << std::endl; quit.store(true); break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE: quit.store(true); break;
             default: break;
         }
     }
@@ -76,23 +76,28 @@ void App::updateViews() {
 }
 
 void App::updateControllers() {
-    double lastUpdate = al_get_time(); // In seconds
+    double lastUpdate = -1; // In seconds
     double elapsedRealTime = 0;
     double elapsedT = 0;
     double elapsedS = 0;
     double elapsedM = 0;
     double elapsedH = 0;
+    double elapsedD = 0;
+
+    // The biggest update rate should trigger all other updates
+    activities[mainActivityId]->updateControllerInter(BaseWidget::UpdateRate::EACH_12HOUR);
 
     while (!quit.load()) {
         double update = al_get_time();
         elapsedRealTime = update - lastUpdate;
 
-        if (mainActivityId > -1) {
+        if (mainActivityId > -1 && lastUpdate > 0) {
             BaseWidget::UpdateRate rate = BaseWidget::UpdateRate::NONE;
             elapsedT += elapsedRealTime;
             elapsedS += elapsedRealTime;
             elapsedM += elapsedRealTime;
             elapsedH += elapsedRealTime;
+            elapsedD += elapsedRealTime;
 
             if (elapsedT > TICK_TIME) {
                 elapsedT -= TICK_TIME;
@@ -105,13 +110,19 @@ void App::updateControllers() {
             if (elapsedM > 60.0) {
                 elapsedM -= 60.0;
                 rate = BaseWidget::UpdateRate::EACH_MINUTE;
+                std::cout << "Min2" << std::endl;
             }
             if (elapsedH > 3600.0) {
                 elapsedH -= 3600.0;
                 rate = BaseWidget::UpdateRate::EACH_HOUR;
             }
+            if (elapsedD > 3600.0 * 12.0) {
+                elapsedH -= 3600.0 * 12.0;
+                rate = BaseWidget::UpdateRate::EACH_12HOUR;
+            }
 
             if (rate != BaseWidget::UpdateRate::NONE) {
+                // TODO should be async
                 activities[mainActivityId]->updateControllerInter(rate);
             }
             activities[mainActivityId]->updateControllerRT(elapsedRealTime);

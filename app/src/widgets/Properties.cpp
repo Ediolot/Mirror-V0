@@ -36,6 +36,10 @@ Fonts::Size Parser::fontSize(XMLElement* element, const char* attribute, Fonts::
     return (Fonts::Size) Properties::Parser::base(element, attribute, defValue, Fonts::N_FONTS_SIZES, Strings::fontSize);
 }
 
+Fonts::Rid Parser::fontFamily(XMLElement* element, const char* attribute, Fonts::Rid defValue) {
+    return (Fonts::Rid) Properties::Parser::base(element, attribute, defValue, Fonts::N_FONTS, Strings::fontFamily);
+}
+
 SCALE_TYPE Parser::scaleType(XMLElement* element, const char* attribute, SCALE_TYPE defValue) {
     return (SCALE_TYPE) Properties::Parser::base(element, attribute, defValue, N_ELEMENTS_SCALE_TYPE, Strings::scaleType);
 }
