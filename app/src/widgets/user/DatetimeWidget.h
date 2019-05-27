@@ -16,14 +16,10 @@ class DatetimeWidget : public BaseWidget {
 
 public:
     explicit DatetimeWidget(BaseWidget* parent = nullptr);
-    virtual ~DatetimeWidget();
+    virtual ~DatetimeWidget() = default;
     const std::string& getDefaultViewPath() const override;
     void updateView() override;
     void updateControllerInter(UpdateRate rate) override;
-
-protected:
-    void parseViewOptions(XMLElement *element) override;
-    void updateViewOptions(XMLElement *element) override;
 };
 
 

@@ -11,8 +11,9 @@
 
 ImageWidget::ImageWidget(BaseWidget *parent)
     : BaseWidget(parent)
+    , imagePath("")
     , image(nullptr)
-    , mode(SCALE_ALL)
+    , scale(Properties::SCALE_TYPE::SCALE_ALL)
 {}
 
 ImageWidget::~ImageWidget() {
@@ -26,19 +27,9 @@ const std::string &ImageWidget::getDefaultViewPath() const {
 void ImageWidget::parseViewOptions(XMLElement *element) {
     BaseWidget::parseViewOptions(element);
 
-    std::string imagePath = toString(element->FirstChildElement("path"), "value");
-    std::string modeStr = toString(element->FirstChildElement("mode"), "value", "scale_all");
+    imagePath = Properties::Parser::string(element, "path", imagePath);
+    scale = Properties::Parser::scaleType(element, "scale", scale);
     setImage(imagePath);
-    setModeFromStr(modeStr);
-}
-
-void ImageWidget::updateViewOptions(XMLElement *element) {
-    BaseWidget::updateViewOptions(element);
-
-    std::string imagePath = toString(element, "path");
-    std::string modeStr = toString(element, "mode");
-    setImage(imagePath);
-    setModeFromStr(modeStr);
 }
 
 void ImageWidget::setImage(const std::string &path) {
@@ -66,9 +57,10 @@ void ImageWidget::updateView() {
     double ratioH = dh / bh;
     bool shortOnWidth = ratioW > ratioH;
 
-    switch (mode) {
-        case SCALE_ALL: break;
-        case SCALE_FIT:
+    switch (scale) {
+        default: break;
+        case Properties::SCALE_TYPE::SCALE_ALL: break;
+        case Properties::SCALE_TYPE::SCALE_FIT:
             if (shortOnWidth) {
                 dx += dw / 2.0;
                 dw = bw * ratioH;
@@ -79,19 +71,9 @@ void ImageWidget::updateView() {
                 dy -= dh / 2.0;
             }
             break;
-        case SCALE_EXPAND:
+        case Properties::SCALE_TYPE::SCALE_EXPAND:
             // TODO
             break;
     }
     al_draw_scaled_bitmap(image, 0, 0, bw, bh, dx, dy, dw, dh, 0);
-}
-
-void ImageWidget::setModeFromStr(const std::string &modeStr) {
-    if (modeStr == "scale_all" || modeStr == "SCALE_ALL") {
-        mode = SCALE_ALL;
-    } else if (modeStr == "scale_fit" || modeStr == "SCALE_FIT") {
-        mode = SCALE_FIT;
-    } else if (modeStr == "scale_expand" || modeStr == "SCALE_EXPAND") {
-        mode = SCALE_EXPAND;
-    }
 }

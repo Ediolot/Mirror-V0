@@ -41,7 +41,7 @@ void Utils::matToBitmapRGB888(const cv::Mat& mat, ALLEGRO_BITMAP* bitmap) {
     al_unlock_bitmap(bitmap);
 }
 
-void Utils::initAllegroModule(const std::string msg, bool &ok, std::function<bool()> lambda) {
+void Utils::initAllegroModule(const std::string& msg, bool &ok, std::function<bool()> lambda) {
     if (ok) {
         std::cout << msg;
         ok = bool((lambda)());
@@ -96,7 +96,13 @@ nlohmann::json Utils::requestJSON(const std::string& url) {
     const std::string CURL_CMD = "D:\\Programming\\Libs\\curl-7.65.0\\bin\\curl.exe -A magicmirrory -s"; // TODO
     std::string cmd = CURL_CMD + " " + "\"" + url + "\"";
     std::string output = execCmd(cmd);
-    return nlohmann::json::parse(output);
+    nlohmann::json data;
+    try {
+        data = nlohmann::json::parse(output);
+    } catch (...) {
+        return nlohmann::json("");
+    }
+    return data;
 }
 
 std::string Utils::substrUTF8(const std::string& str, unsigned int start, unsigned int len) {
@@ -132,4 +138,18 @@ void Utils::trim(std::string& s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
         return !std::isspace(ch);
     }).base(), s.end());
+}
+
+std::vector<std::string> Utils::splitString(std::string s, const std::string& del) {
+    // https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+    std::vector<std::string> result;
+    size_t pos = 0;
+    std::string token;
+    while ((pos = s.find(del)) != std::string::npos) {
+        token = s.substr(0, pos);
+        result.push_back(token);
+        s.erase(0, pos + del.length());
+    }
+    result.push_back(s);
+    return result;
 }

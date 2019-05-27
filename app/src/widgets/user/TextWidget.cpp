@@ -12,33 +12,18 @@
 
 TextWidget::TextWidget(BaseWidget *parent)
     : BaseWidget(parent)
-    , txt("")
+    , txt("Default text")
     , fontId(Fonts::DEFAULT_FONT)
-    , alignment(ALLEGRO_ALIGN_LEFT)
+    , fontSize(Fonts::Size::PX16)
+    , alignment(Properties::ALIGN::LEFT)
 {}
-
-TextWidget::~TextWidget() {
-
-}
 
 void TextWidget::parseViewOptions(XMLElement *element) {
     BaseWidget::parseViewOptions(element);
 
-    txt = toString(element->FirstChildElement("text"), "value");
-    fontSize = (Fonts::Size)toInt(element->FirstChildElement("font"), "size", 16);
-    alignment = (Fonts::Size)toInt(element->FirstChildElement("text-align"), "value", 0);
-    std::string fontFamilyStr = toString(element->FirstChildElement("font"), "family", "default");
-    setFontFromStr(fontFamilyStr);
-}
-
-void TextWidget::updateViewOptions(XMLElement *element) {
-    BaseWidget::updateViewOptions(element);
-
-    txt = toString(element, "text", txt);
-    fontSize = (Fonts::Size)toInt(element, "font-size", 16);
-    alignment = (Fonts::Size)toInt(element, "text-align", alignment);
-    std::string fontFamilyStr = toString(element, "font-family", "default");
-    setFontFromStr(fontFamilyStr);
+    txt = Properties::Parser::string(element, "text", txt);
+    fontSize = Properties::Parser::fontSize(element, "font-size", fontSize);
+    alignment = Properties::Parser::align(element, "text-align", alignment);
 }
 
 const std::string& TextWidget::getDefaultViewPath() const {
@@ -105,14 +90,6 @@ std::string TextWidget::drawTextLine(double x, double y, std::string s, const st
     return s;
 }
 
-void TextWidget::setText(const std::string &txt) {
-    this->txt = txt;
-}
-
-void TextWidget::setFontFromStr(const std::string &family) {
-    //if (family == ...) {
-    //    return;
-    //}
-
-    // font = Fonts::DEFAULT_FONT;
+void TextWidget::setText(const std::string &newTxt) {
+    txt = newTxt;
 }

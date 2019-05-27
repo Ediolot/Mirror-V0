@@ -7,31 +7,22 @@
 #include "DatetimeWidget.h"
 #include "TextWidget.h"
 
-DatetimeWidget::DatetimeWidget(BaseWidget *parent) : BaseWidget(parent) {
-
-}
-
-DatetimeWidget::~DatetimeWidget() {
-
-}
+DatetimeWidget::DatetimeWidget(BaseWidget *parent)
+    : BaseWidget(parent)
+    , date("")
+    , time("")
+    , quote("")
+{}
 
 const std::string &DatetimeWidget::getDefaultViewPath() const {
     return DEFAULT_VIEW;
 }
 
-void DatetimeWidget::parseViewOptions(XMLElement *element) {
-    BaseWidget::parseViewOptions(element);
-}
-
-void DatetimeWidget::updateViewOptions(XMLElement *element) {
-    BaseWidget::updateViewOptions(element);
-}
-
 void DatetimeWidget::updateView() {
     BaseWidget::updateView();
 
-    ((TextWidget*)getChild(0))->setText(date);
-    ((TextWidget*)getChild(1))->setText(time);
+    ((TextWidget*)getChild("date"))->setText(date);
+    ((TextWidget*)getChild("time"))->setText(time);
 }
 
 void DatetimeWidget::updateControllerInter(UpdateRate rate) {

@@ -8,29 +8,14 @@
 #include "user/ImageWidget.h"
 #include "user/DatetimeWidget.h"
 
-WidgetFactory::WidgetFactory()
-        : mapping()
-{
-    mapping.insert(std::make_pair("datetime", DATETIME));
-    mapping.insert(std::make_pair("text", TEXT));
-    mapping.insert(std::make_pair("image", IMAGE));
-}
-
-BaseWidget *WidgetFactory::create(WidgetFactory::Type type, BaseWidget* parent) {
+BaseWidget *WidgetFactory::create(Properties::TYPE type, BaseWidget* parent) {
     BaseWidget *widget = nullptr;
     switch(type) {
-        case Type::TEXT: widget = new TextWidget(parent); break;
-        case Type::IMAGE: widget = new ImageWidget(parent); break;
-        case Type::DATETIME: widget = new DatetimeWidget(parent); break;
+        case Properties::TYPE::TEXT: widget = new TextWidget(parent); break;
+        case Properties::TYPE::IMAGE: widget = new ImageWidget(parent); break;
+        case Properties::TYPE::DATETIME: widget = new DatetimeWidget(parent); break;
         default: return nullptr;
     }
     widget->loadDefaultView();
     return widget;
-}
-
-BaseWidget *WidgetFactory::createFromName(const std::string &name, BaseWidget* parent) {
-    if (name.empty()) { // TODO exception
-        std::cerr << "Error invalid name" << std::endl;
-    }
-    return create(mapping.at(name), parent); // TODO Check if it does not exist
 }

@@ -10,17 +10,10 @@
 #include "../BaseWidget.h"
 
 class ImageWidget : public BaseWidget {
-public:
-    enum FillType {
-        SCALE_FIT = 0,
-        SCALE_ALL = 1,
-        SCALE_EXPAND = 2,
-    };
-
-private:
     inline static const std::string DEFAULT_VIEW = "../views/imageWidget.xml";
+    std::string imagePath;
     ALLEGRO_BITMAP *image;
-    FillType mode;
+    Properties::SCALE_TYPE scale;
 
 public:
     explicit ImageWidget(BaseWidget* parent = nullptr);
@@ -32,7 +25,6 @@ public:
 
 protected:
     void parseViewOptions(XMLElement *element) override;
-    void updateViewOptions(XMLElement *element) override;
 };
 
 

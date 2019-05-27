@@ -8,19 +8,21 @@
 #include <allegro5/allegro_font.h>
 
 class Fonts {
-    static const int ELEMENTS = 1;
-    static const int SIZES = 7;
-    ALLEGRO_FONT* fonts[ELEMENTS * SIZES];
-    
 public:
     enum Rid {
         DEFAULT_FONT = 0,
+        N_FONTS,
     };
 
     enum Size {
-        PX8 = 0, PX16 = 1, PX24 = 2, PX32 = 3, PX40 = 4, PX64 = 5, PX128 = 6
+        PX8 = 0, PX16, PX24, PX32, PX40, PX64, PX128,
+        N_FONTS_SIZES,
     };
 
+private:
+    ALLEGRO_FONT* fonts[N_FONTS * N_FONTS_SIZES];
+
+public:
     static Fonts& getInstance() {
         static Fonts x;
         return x;

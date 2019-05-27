@@ -11,20 +11,7 @@
 
 class WidgetFactory {
 public:
-    enum Type {
-        DATETIME,
-        TEXT,
-        IMAGE,
-    };
-
-private:
-    std::map<std::string, Type> mapping;
-
-public:
-    WidgetFactory();
-
-    BaseWidget* createFromName(const std::string& name, BaseWidget* parent = nullptr);
-    BaseWidget* create(Type type, BaseWidget* parent = nullptr);
+    BaseWidget* create(Properties::TYPE type, BaseWidget* parent = nullptr);
 };
 
 

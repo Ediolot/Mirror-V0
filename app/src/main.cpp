@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     app.run();
 
     //weather stuff
-    std::string url_weather = "http://api.openweathermap.org/data/2.5/weather?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";
+    /*std::string url_weather = "http://api.openweathermap.org/data/2.5/weather?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";
     nlohmann::json weather = Utils::requestJSON(url_weather);
     std::string weather_description = weather["weather"][0]["description"];
     std::string weather_image = weather["weather"][0]["main"];
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
 
     for(int a = 0; a <= 4; a++) {
         std::cout <<  reddit_comments[a] << std::endl;
-    }
+    }*/
 
 
     return 0;

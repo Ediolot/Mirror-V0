@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
-    <options>
-        <!-- These are the default options for all of its parameters -->
-        <padding value="2px"/>
-        <size width="100px" height="20px" />
-        <pos x="0" y="0"/>
-        <font family="default" size="16" />
-        <text value="Default text" />
-        <text-align value="0" />
-    </options>
     <children />
 </root>

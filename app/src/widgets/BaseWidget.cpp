@@ -11,19 +11,17 @@
 
 
 BaseWidget::BaseWidget(BaseWidget* parent)
-    : parent(parent)
+    : id("")
+    , parent(parent)
     , children()
     , x(0)
     , y(0)
     , width(0)
     , height(0)
-    , padding(0)
-    , id(-1)
-    , backgroundR(-1)
-    , backgroundG(-1)
-    , backgroundB(-1)
-    , vAlign(0)
-    , hAlign(0)
+    , padding(2)
+    , background(Colors::get(Colors::EMPTY))
+    , vAlign(Properties::ALIGN::TOP)
+    , hAlign(Properties::ALIGN::LEFT)
 {}
 
 BaseWidget::~BaseWidget() {
@@ -34,20 +32,16 @@ void BaseWidget::loadView(const std::string &xmlView) {
     if (xmlView.empty()) {
         return;
     }
-
     XMLDocument doc;
     doc.LoadFile(xmlView.c_str());
-
-    // ---- Parse (normally default) view options for this widget from the view file ----
-    XMLElement *options = doc.FirstChildElement("root")->FirstChildElement("options"); // TODO exception if not found
-    parseViewOptions(options);
 
     // ---- Load children and modify their viewing options as specified in this view file ----
     WidgetFactory factory;
     XMLElement *widgets = doc.FirstChildElement("root")->FirstChildElement("children"); // TODO exception if not found
     for (XMLElement* widget = widgets->FirstChildElement(); widget; widget = widget->NextSiblingElement()) {
-        BaseWidget *child = factory.createFromName(widget->Attribute("type"), this);
-        child->updateViewOptions(widget);
+        Properties::TYPE childType = Properties::Parser::type(widget, "type", Properties::TYPE::NONE);
+        BaseWidget *child = factory.create(childType, this);
+        child->parseViewOptions(widget);
         children.push_back(child);
     }
 }
@@ -59,83 +53,15 @@ void BaseWidget::clearView() {
 }
 
 void BaseWidget::parseViewOptions(XMLElement *element) {
-    x = toValue(element->FirstChildElement("pos"), "x");
-    y = toValue(element->FirstChildElement("pos"), "y");
-    width = toValue(element->FirstChildElement("size"), "width");
-    height = toValue(element->FirstChildElement("size"), "height");
-    padding = toValue(element->FirstChildElement("padding"), "value");
-    backgroundR = toInt(element->FirstChildElement("background"), "r", -1);
-    backgroundG = toInt(element->FirstChildElement("background"), "g", -1);
-    backgroundB = toInt(element->FirstChildElement("background"), "b", -1);
-    vAlign = toInt(element->FirstChildElement("valign"), "value", 0);
-    hAlign = toInt(element->FirstChildElement("halign"), "value", 0);
-}
-
-void BaseWidget::updateViewOptions(XMLElement *element) {
-    id = toInt(element, "id", id);
-    x = toValue(element, "x", x);
-    y = toValue(element, "y", y);
-    width = toValue(element, "width", width);
-    height = toValue(element, "height", height);
-    padding = toValue(element, "padding", padding);
-    backgroundR = toInt(element, "r", backgroundR);
-    backgroundG = toInt(element, "g", backgroundG);
-    backgroundB = toInt(element, "b", backgroundB);
-    vAlign = toInt(element, "valign", vAlign);
-    hAlign = toInt(element, "halign", hAlign);
-}
-
-Value BaseWidget::toValue(XMLElement *element, const char *attribute,
-                          double defaultValue, Value::Type defaultType) const {
-
-    double value = defaultValue;
-    Value::Type type = defaultType;
-
-    if (!element) {
-        return Value(value, type);
-    }
-
-    const char* attributeStr = element->Attribute(attribute, nullptr);
-    if (!attributeStr) {
-        return Value(value, type);
-    }
-
-    int len = strlen(attributeStr);
-    value = strtod(attributeStr, nullptr);
-    if (len > 3 && attributeStr[len - 1] == 'x' && attributeStr[len - 2] == 'p') {
-        type = Value::Type::NUMERIC;
-    } else {
-        type = Value::Type::PERCENT;
-        value /= 100.0;
-    }
-
-    return Value(value, type);
-}
-
-int BaseWidget::toInt(XMLElement *element, const char *attribute, int defaultValue) const {
-    if (!element) {
-        return defaultValue;
-    }
-    const char* attributeStr = element->Attribute(attribute, nullptr);
-    if (!attributeStr) {
-        return defaultValue;
-    }
-    return strtol(attributeStr, nullptr, 10);
-}
-
-std::string BaseWidget::toString(XMLElement *element, const char *attribute, const std::string &defaultValue) const {
-    if (!element) {
-        return defaultValue;
-    }
-    const char* attributeStr = element->Attribute(attribute, nullptr);
-    if (!attributeStr) {
-        return defaultValue;
-    }
-    return std::string(attributeStr);
-}
-
-Value BaseWidget::toValue(XMLElement *element, const char *attribute, const Value& value) const {
-    return toValue(element, attribute, value.getDouble(), value.getType());
+    id         = Properties::Parser::string(element, "id", id);
+    x          = Properties::Parser::value(element, "x", x);
+    y          = Properties::Parser::value(element, "y", y);
+    width      = Properties::Parser::value(element, "width", width);
+    height     = Properties::Parser::value(element, "height", height);
+    padding    = Properties::Parser::value(element, "padding", padding);
+    background = Properties::Parser::color(element, "background", background);
+    vAlign     = Properties::Parser::align(element, "valign", vAlign);
+    hAlign     = Properties::Parser::align(element, "halign", hAlign);
 }
 
 void BaseWidget::loadDefaultView() {
@@ -144,35 +70,33 @@ void BaseWidget::loadDefaultView() {
 
 void BaseWidget::updateView() {
     if (parent) {
-        rX = parent->rX + x.calculate(parent->rWidth) + padding.getDouble();
-        rY = parent->rY + y.calculate(parent->rHeight) + padding.getDouble();
-        rWidth = width.calculate(parent->rWidth) - padding.getDouble() * 2;
+        // If it has a parent, calculate reference variables using it
+        rX      = parent->rX + x.calculate(parent->rWidth) + padding.getDouble();
+        rY      = parent->rY + y.calculate(parent->rHeight) + padding.getDouble();
+        rWidth  = width.calculate(parent->rWidth) - padding.getDouble() * 2;
         rHeight = height.calculate(parent->rHeight) - padding.getDouble() * 2;
     } else {
-        rX = x.getDouble() + padding.getDouble();
-        rY = y.getDouble() + padding.getDouble();
-        rWidth = width.getDouble() - padding.getDouble() * 2;
+        rX      = x.getDouble() + padding.getDouble();
+        rY      = y.getDouble() + padding.getDouble();
+        rWidth  = width.getDouble() - padding.getDouble() * 2;
         rHeight = height.getDouble() - padding.getDouble() * 2;
     }
-
-    if (hAlign == 2) {
+    if (hAlign == Properties::ALIGN::CENTER) {
         rX -= rWidth / 2;
     }
-    else if (hAlign == 1) {
+    else if (hAlign == Properties::ALIGN::RIGHT) {
         rX -= rWidth;
     }
-    if (vAlign == 2) {
+    if (vAlign == Properties::ALIGN::CENTER) {
         rY -= rHeight / 2;
     }
-    else if (vAlign == 1) {
+    else if (vAlign == Properties::ALIGN::BOTTOM) {
         rY -= rHeight;
     }
 
-    if (backgroundR >= 0 && backgroundG >= 0 && backgroundB >= 0) {
-        ALLEGRO_COLOR color = al_map_rgb(backgroundR, backgroundG, backgroundB);
-        al_draw_filled_rectangle(rX, rY, rX + rWidth, rY + rHeight, color);
+    if (!Colors::isEmpty(background)) {
+        al_draw_filled_rectangle(rX, rY, rX + rWidth, rY + rHeight, background);
     }
-
     for (BaseWidget* child : children) {
         child->updateView();
     }
@@ -186,16 +110,17 @@ void BaseWidget::setHeight(double value, Value::Type type) {
     height = Value(value, type);
 }
 
-int BaseWidget::getId() const {
+const std::string& BaseWidget::getId() const {
     return id;
 }
 
-BaseWidget *BaseWidget::getChild(int id) {
+BaseWidget *BaseWidget::getChild(const std::string& childId) {
     for (BaseWidget *child : children) {
-        if (child->getId() == id) {
+        if (child->getId() == childId) {
             return child;
         }
     }
+    std::cerr << "CHILD " << childId << " not found!" << std::endl;
     return nullptr;
 }
 

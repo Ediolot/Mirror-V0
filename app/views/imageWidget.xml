@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
-    <options>
-        <!-- These are the default options for all of its parameters -->
-        <padding value="2px"/>
-        <size width="100px" height="100px" />
-        <pos x="0" y="0"/>
-        <path value="" />
-        <mode value="scale_fit" />
-        <background r="-1" g="-1" b="-1" />
-    </options>
     <children />
 </root>

@@ -5,27 +5,33 @@
 #ifndef MIRROR_APP_COLORS_H
 #define MIRROR_APP_COLORS_H
 
-
 #include <allegro5/color.h>
 
 class Colors {
-    static const int ELEMENTS = 3;
-    ALLEGRO_COLOR colors[ELEMENTS];
-
 public:
     enum Rid {
         WHITE = 0,
-        BLACK = 1,
-        CYAN  = 2,
+        BLACK,
+        CYAN,
+        EMPTY,
+        N_COLORS
     };
 
+private:
+    ALLEGRO_COLOR colors[N_COLORS];
+
+public:
     static Colors& getInstance() {
         static Colors x;
         return x;
     }
 
-    static const ALLEGRO_COLOR get(Rid id) {
+    static const ALLEGRO_COLOR& get(Rid id) {
         return Colors::getInstance().colors[id];
+    }
+
+    static const bool isEmpty(const ALLEGRO_COLOR& color) {
+        return !memcmp(&color, &get(Colors::EMPTY), sizeof(ALLEGRO_COLOR));
     }
 
     Colors(const Colors&) = delete;
@@ -37,7 +43,7 @@ public:
 
 private:
     Colors();
-    virtual ~Colors();
+    virtual ~Colors() = default;
 };
 
 
