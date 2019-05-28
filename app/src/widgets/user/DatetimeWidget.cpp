@@ -12,6 +12,7 @@ using namespace nlohmann;
 
 DatetimeWidget::DatetimeWidget(BaseWidget *parent)
     : BaseWidget(parent)
+    , runOnceAsync()
     , date("")
     , time("")
     , quote("")
@@ -44,18 +45,20 @@ void DatetimeWidget::updateControllerInter(UpdateRate rate) {
     }
 
     if (rateIs(rate, UpdateRate::EACH_MINUTE)) {
-        std::string newQuote;
-        do {
-            json data = Utils::requestJSON("https://quota.glitch.me/random");
-            try {
-                std::string quoteText = data["quoteText"];
-                std::string quoteAuthor = data["quoteAuthor"];
-                newQuote = "‘" + quoteText + "’ - " + quoteAuthor;
-            } catch (...) {}
-        } while (quote.size() > 40 * 3);
+        runOnceAsync.run([&](){
+            std::string newQuote;
+            do {
+                json data = Utils::requestJSON("https://quota.glitch.me/random");
+                try {
+                    std::string quoteText = data["quoteText"];
+                    std::string quoteAuthor = data["quoteAuthor"];
+                    newQuote = "‘" + quoteText + "’ - " + quoteAuthor;
+                } catch (...) {}
+            } while (newQuote.size() > 40 * 3);
 
-        if (!newQuote.empty()) {
-            quote = newQuote;
-        }
+            if (!newQuote.empty()) {
+                quote = newQuote;
+            }
+        });
     }
 }

@@ -71,6 +71,8 @@ void App::updateViews() {
             }
             fps.draw();
             al_flip_display();
+        } else {
+            std::cout << "ev2" << std::endl;
         }
     }
 }
@@ -110,7 +112,7 @@ void App::updateControllers() {
             if (elapsedM > 60.0) {
                 elapsedM -= 60.0;
                 rate = BaseWidget::UpdateRate::EACH_MINUTE;
-                std::cout << "Min2" << std::endl;
+                std::cout << "MIN" << std::endl;
             }
             if (elapsedH > 3600.0) {
                 elapsedH -= 3600.0;

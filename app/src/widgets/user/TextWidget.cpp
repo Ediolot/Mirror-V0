@@ -16,6 +16,7 @@ TextWidget::TextWidget(BaseWidget *parent)
     , fontFamily(Fonts::DEFAULT_FONT)
     , fontSize(Fonts::Size::PX16)
     , alignment(Properties::ALIGN::LEFT)
+    , mtx()
 {}
 
 void TextWidget::parseViewOptions(XMLElement *element) {
@@ -35,8 +36,9 @@ void TextWidget::updateView() {
     BaseWidget::updateView();
 
     const ALLEGRO_FONT* font = Fonts::get(fontFamily, fontSize);
+    mtx.lock();
     std::string remaining = txt;
-
+    mtx.unlock();
 
     double height = al_get_font_line_height(font);
     int maxLines = (int)std::floor(rHeight / height);
@@ -93,5 +95,7 @@ std::string TextWidget::drawTextLine(double x, double y, std::string s, const st
 }
 
 void TextWidget::setText(const std::string &newTxt) {
+    mtx.lock();
     txt = newTxt;
+    mtx.unlock();
 }

@@ -7,6 +7,7 @@
 
 
 #include <allegro5/allegro_font.h>
+#include <mutex>
 #include "../BaseWidget.h"
 #include "../../resourceLoaders/Fonts.h"
 
@@ -16,6 +17,7 @@ class TextWidget : public BaseWidget {
     Fonts::Rid fontFamily;
     Fonts::Size fontSize;
     Properties::ALIGN alignment;
+    std::mutex mtx;
 
 public:
     explicit TextWidget(BaseWidget* parent = nullptr);

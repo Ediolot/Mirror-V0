@@ -7,9 +7,11 @@
 
 
 #include "../BaseWidget.h"
+#include "../../utils/RunOnceAsync.h"
 
 class DatetimeWidget : public BaseWidget {
     inline static const std::string DEFAULT_VIEW = "../views/datetimeWidget.xml";
+    RunOnceAsync runOnceAsync;
     std::string date;
     std::string time;
     std::string quote;

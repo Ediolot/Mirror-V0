@@ -7,6 +7,7 @@
 
 
 #include <allegro5/bitmap.h>
+#include <mutex>
 #include "../BaseWidget.h"
 
 class ImageWidget : public BaseWidget {
@@ -14,6 +15,7 @@ class ImageWidget : public BaseWidget {
     std::string imagePath;
     ALLEGRO_BITMAP *image;
     Properties::SCALE_TYPE scale;
+    std::mutex mtx;
 
 public:
     explicit ImageWidget(BaseWidget* parent = nullptr);

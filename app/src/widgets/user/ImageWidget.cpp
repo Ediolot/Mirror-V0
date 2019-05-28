@@ -14,6 +14,7 @@ ImageWidget::ImageWidget(BaseWidget *parent)
     , imagePath("")
     , image(nullptr)
     , scale(Properties::SCALE_TYPE::SCALE_ALL)
+    , mtx()
 {}
 
 ImageWidget::~ImageWidget() {
@@ -36,11 +37,12 @@ void ImageWidget::setImage(const std::string &path) {
     if (path.empty()) {
         return;
     }
-    // TODO lock
+    mtx.lock();
     if (image) {
         al_destroy_bitmap(image);
     }
     image = al_load_bitmap(path.c_str());
+    mtx.unlock();
 }
 
 void ImageWidget::updateView() {

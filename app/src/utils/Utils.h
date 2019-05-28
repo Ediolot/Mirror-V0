@@ -11,6 +11,7 @@
 #include <allegro5/allegro.h>
 #include <opencv2/core.hpp>
 #include <json.h>
+#include <functional>
 
 namespace Utils {
     std::string allegroVersion();

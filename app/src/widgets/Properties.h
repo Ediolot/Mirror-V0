@@ -16,7 +16,7 @@ using namespace tinyxml2;
 
 namespace Properties {
     enum TYPE {
-        NONE = 0, TEXT, IMAGE, DATETIME,
+        NONE = 0, TEXT, IMAGE, DATETIME, WEATHER, NEWS,
         N_ELEMENTS_TYPE
     };
     enum ALIGN {
@@ -29,7 +29,7 @@ namespace Properties {
     };
 
     namespace Strings {
-        inline const char* type[N_ELEMENTS_TYPE] = {"none", "text", "image", "datetime"};
+        inline const char* type[N_ELEMENTS_TYPE] = {"none", "text", "image", "datetime", "weather", "news"};
         inline const char* align[N_ELEMENTS_ALIGN] = {"left", "right", "center", "top", "bottom"};
         inline const char* fontSize[Fonts::N_FONTS_SIZES] = {"tiny", "small", "normal", "big", "large", "huge", "enormous"};
         inline const char* fontFamily[Fonts::N_FONTS] = {"default"};

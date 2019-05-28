@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <children>
+        <widget type="image" id="img" x="0" y="0" width="100px" height="100px" scale="scale_fit" path="../resources/images/weather/clouds.png" />
+    </children>
+</root>
