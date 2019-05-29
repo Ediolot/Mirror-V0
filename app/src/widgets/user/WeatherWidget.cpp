@@ -25,9 +25,9 @@ void WeatherWidget::updateControllerInter(BaseWidget::UpdateRate rate) {
 
     if (rateIs(rate, UpdateRate::EACH_MINUTE)) {
         std::string url_weather = "http://api.openweathermap.org/data/2.5/forecast?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";
-        json data = Utils::requestJSON(url_weather);
-        if (!data.empty()) {
+        //json data = Utils::requestJSON(url_weather);
+        //if (!data.empty()) {
 
-        }
+        //}
     }
 }

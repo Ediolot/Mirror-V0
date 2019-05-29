@@ -18,8 +18,6 @@ namespace Utils {
     void matToBitmapRGB888(const cv::Mat& mat, ALLEGRO_BITMAP* bitmap);
     void initAllegroModule(const std::string& msg, bool &ok, std::function<bool()> lambda);
     bool startAllegro();
-    std::string execCmd(const std::string &cmd);
-    nlohmann::json requestJSON(const std::string& url);
     std::string substrUTF8(const std::string& str, unsigned int start, unsigned int len);
     void trim(std::string& s);
     std::vector<std::string> splitString(std::string str, const std::string& del = ",");

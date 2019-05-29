@@ -7,57 +7,51 @@
 #include "DatetimeWidget.h"
 #include "TextWidget.h"
 #include "../../utils/Utils.h"
+#include "../../utils/Requester.h"
 
 using namespace nlohmann;
 
 DatetimeWidget::DatetimeWidget(BaseWidget *parent)
     : BaseWidget(parent)
     , runOnceAsync()
-    , date("")
-    , time("")
-    , quote("")
 {}
 
 const std::string &DatetimeWidget::getDefaultViewPath() const {
     return DEFAULT_VIEW;
 }
 
-void DatetimeWidget::updateView() {
-    BaseWidget::updateView();
-
-    ((TextWidget*)getChild("date"))->setText(date);
-    ((TextWidget*)getChild("time"))->setText(time);
-    ((TextWidget*)getChild("quote"))->setText(quote);
-}
-
 void DatetimeWidget::updateControllerInter(UpdateRate rate) {
     BaseWidget::updateControllerInter(rate);
 
+    auto timeWidget = (TextWidget*)getChild("time");
+    auto dateWidget = (TextWidget*)getChild("date");
+    auto quoteWidget = (TextWidget*)getChild("quote");
+
     if (rateIs(rate, UpdateRate::EACH_TICK)) {
         std::time_t t = std::time(nullptr);
-        char mbstr[100];
+        char mbstr[128];
         if (std::strftime(mbstr, sizeof(mbstr), "%H : %M : %S", std::localtime(&t))) {
-            time = mbstr;
+            timeWidget->setText(mbstr);
         }
         if (std::strftime(mbstr, sizeof(mbstr), "%d / %b / %y", std::localtime(&t))) {
-            date = mbstr;
+            dateWidget->setText(mbstr);
         }
     }
 
     if (rateIs(rate, UpdateRate::EACH_MINUTE)) {
-        runOnceAsync.run([&](){
-            std::string newQuote;
+        runOnceAsync.run([=](){
+            std::string quote;
             do {
-                json data = Utils::requestJSON("https://quota.glitch.me/random");
+                json data = Requester(URL).asJson();
                 try {
                     std::string quoteText = data["quoteText"];
                     std::string quoteAuthor = data["quoteAuthor"];
-                    newQuote = "‘" + quoteText + "’ - " + quoteAuthor;
+                    quote = "‘" + quoteText + "’ - " + quoteAuthor;
                 } catch (...) {}
-            } while (newQuote.size() > 40 * 3);
+            } while (quote.size() > 40 * 3);
 
-            if (!newQuote.empty()) {
-                quote = newQuote;
+            if (!quote.empty()) {
+                quoteWidget->setText(quote);
             }
         });
     }

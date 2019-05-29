@@ -11,16 +11,13 @@
 
 class DatetimeWidget : public BaseWidget {
     inline static const std::string DEFAULT_VIEW = "../views/datetimeWidget.xml";
+    inline static const std::string URL = "https://quota.glitch.me/random";
     RunOnceAsync runOnceAsync;
-    std::string date;
-    std::string time;
-    std::string quote;
 
 public:
     explicit DatetimeWidget(BaseWidget* parent = nullptr);
     virtual ~DatetimeWidget() = default;
     const std::string& getDefaultViewPath() const override;
-    void updateView() override;
     void updateControllerInter(UpdateRate rate) override;
 };
 

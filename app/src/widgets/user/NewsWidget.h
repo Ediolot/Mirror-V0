@@ -16,14 +16,10 @@ class NewsWidget : public BaseWidget {
     inline static const int N_ARTICLES = 4;
     RunOnceAsync runOnceAsync;
 
-    std::string titles[N_ARTICLES];
-    std::string authors[N_ARTICLES];
-
 public:
     explicit NewsWidget(BaseWidget* parent = nullptr);
     virtual ~NewsWidget() = default;
     const std::string& getDefaultViewPath() const override;
-    void updateView() override;
     void updateControllerInter(UpdateRate rate) override;
 };
 

@@ -23,6 +23,7 @@ public:
     const std::string& getDefaultViewPath() const override;
     void updateView() override;
     void setImage(const std::string& path);
+    void setImage(ALLEGRO_BITMAP* bitmap); // The bitmap will be freed by ImageWidget upon destruction
     void setModeFromStr(const std::string& modeStr);
 
 protected:

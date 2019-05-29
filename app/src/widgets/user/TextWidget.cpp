@@ -71,7 +71,7 @@ std::string TextWidget::drawTextLine(double x, double y, std::string s, const st
         len--;
     } while (width > rWidth);
 
-    s = len > s.size() ? "" : Utils::substrUTF8(s, len + 1, s.size() - len);
+    s = (len + 1) >= s.size() ? "" : Utils::substrUTF8(s, len + 1, s.size() - len);
     Utils::trim(s);
 
     if (!s.empty() && !end.empty()) {

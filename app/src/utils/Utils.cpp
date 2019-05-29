@@ -10,6 +10,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include "Utils.h"
+#include "Requester.h"
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -17,6 +18,7 @@
 #include <string>
 #include <array>
 #include <json.h>
+#include <curl/curl.h>
 
 std::string Utils::allegroVersion() {
     uint32_t version = al_get_allegro_version();
@@ -77,32 +79,6 @@ bool Utils::startAllegro() {
     });
 
     return ok;
-}
-
-std::string Utils::execCmd(const std::string &cmd) {
-    std::array<char, 256> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result;
-}
-
-nlohmann::json Utils::requestJSON(const std::string& url) {
-    const std::string CURL_CMD = "D:\\Programming\\Libs\\curl-7.65.0\\bin\\curl.exe -A magicmirrory -s"; // TODO
-    std::string cmd = CURL_CMD + " " + "\"" + url + "\"";
-    std::string output = execCmd(cmd);
-    nlohmann::json data;
-    try {
-        data = nlohmann::json::parse(output);
-    } catch (...) {
-        return nlohmann::json("");
-    }
-    return data;
 }
 
 std::string Utils::substrUTF8(const std::string& str, unsigned int start, unsigned int len) {

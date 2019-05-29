@@ -82,16 +82,16 @@ void BaseWidget::updateView() {
         rHeight = height.getDouble() - padding.getDouble() * 2;
     }
     if (hAlign == Properties::ALIGN::CENTER) {
-        rX -= rWidth / 2;
+        rX -= rWidth / 2 + padding.getDouble();
     }
     else if (hAlign == Properties::ALIGN::RIGHT) {
         rX -= rWidth;
     }
     if (vAlign == Properties::ALIGN::CENTER) {
-        rY -= rHeight / 2;
+        rY -= rHeight / 2 + padding.getDouble();
     }
     else if (vAlign == Properties::ALIGN::BOTTOM) {
-        rY -= rHeight;
+        rY -= rHeight + padding.getDouble() * 2;
     }
 
     if (!Colors::isEmpty(background)) {
