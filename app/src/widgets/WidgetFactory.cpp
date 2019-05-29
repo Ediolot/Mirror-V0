@@ -9,6 +9,7 @@
 #include "user/DatetimeWidget.h"
 #include "user/WeatherWidget.h"
 #include "user/NewsWidget.h"
+#include "user/SolarSystemWidget.h"
 
 BaseWidget *WidgetFactory::create(Properties::TYPE type, BaseWidget* parent) {
     BaseWidget *widget = nullptr;
@@ -18,6 +19,7 @@ BaseWidget *WidgetFactory::create(Properties::TYPE type, BaseWidget* parent) {
         case Properties::TYPE::DATETIME: widget = new DatetimeWidget(parent); break;
         case Properties::TYPE::WEATHER: widget = new WeatherWidget(parent); break;
         case Properties::TYPE::NEWS: widget = new NewsWidget(parent); break;
+        case Properties::TYPE::SOLAR_SYSTEM: widget = new SolarSystemWidget(parent); break;
         default: return nullptr;
     }
     widget->loadDefaultView();

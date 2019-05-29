@@ -8,7 +8,10 @@
 
 #include "../BaseWidget.h"
 #include "../../utils/RunOnceAsync.h"
+#include "../../utils/Requester.h"
+#include "ImageWidget.h"
 
+#include <atomic>
 
 class NewsWidget : public BaseWidget {
     inline static const std::string DEFAULT_VIEW = "../views/newsWidget.xml";
@@ -16,11 +19,14 @@ class NewsWidget : public BaseWidget {
     inline static const int N_ARTICLES = 4;
     RunOnceAsync runOnceAsync;
 
+    std::atomic_bool imagesNeedUpdate;
+
 public:
     explicit NewsWidget(BaseWidget* parent = nullptr);
     virtual ~NewsWidget() = default;
     const std::string& getDefaultViewPath() const override;
     void updateControllerInter(UpdateRate rate) override;
+    void updateView() override;
 };
 
 

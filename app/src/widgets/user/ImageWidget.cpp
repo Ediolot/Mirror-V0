@@ -48,10 +48,11 @@ void ImageWidget::setImage(const std::string &path) {
 void ImageWidget::updateView() {
     BaseWidget::updateView();
 
+    mtx.lock();
     if (!image) {
+        mtx.unlock();
         return;
     }
-
     double bw = al_get_bitmap_width(image);
     double bh = al_get_bitmap_height(image);
     double dx = rX;
@@ -82,6 +83,7 @@ void ImageWidget::updateView() {
             break;
     }
     al_draw_scaled_bitmap(image, 0, 0, bw, bh, dx, dy, dw, dh, 0);
+    mtx.unlock();
 }
 
 void ImageWidget::setImage(ALLEGRO_BITMAP* bitmap) {

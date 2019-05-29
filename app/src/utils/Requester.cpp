@@ -16,8 +16,37 @@ void Requester::end() {
     curl_global_cleanup();
 }
 
+ALLEGRO_BITMAP* Requester::dataToBitmap(const Requester::data& d, const std::string& extension) {
+    if (d.len == 0 || d.bytes == nullptr) {
+        return nullptr;
+    }
+
+    ALLEGRO_FILE *f = al_open_memfile(d.bytes, d.len, "r");
+    ALLEGRO_BITMAP *bitmap = al_load_bitmap_f(f, extension.c_str());
+    al_fclose(f);
+
+    return bitmap;
+}
+
+std::string Requester::inferExtension(const std::string& url) {
+    if (url.find("jpg") != std::string::npos) {
+        return ".jpg";
+    }
+    if (url.find("jpeg") != std::string::npos) {
+        return ".jpg";
+    }
+    if (url.find("png") != std::string::npos) {
+        return ".png";
+    }
+    if (url.find("bmp") != std::string::npos) {
+        return ".bmp";
+    }
+    return ".jpg";
+}
+
 Requester::Requester(const std::string& url)
     : d({nullptr, 0})
+    , url(url)
 {
     CURL *curl;
     CURLcode res;
@@ -35,7 +64,6 @@ Requester::Requester(const std::string& url)
             d.bytes = nullptr;
             d.len = 0;
         }
-        std::cout << "Response: " << res << std::endl;
     }
 }
 
@@ -76,14 +104,9 @@ nlohmann::json Requester::asJson() const {
     return data;
 }
 
-ALLEGRO_BITMAP *Requester::asAlBitmap(const std::string& extension) const {
-    if (d.len == 0 || d.bytes == nullptr) {
-        return nullptr;
+ALLEGRO_BITMAP *Requester::asAlBitmap(std::string extension) const {
+    if (extension.empty()) {
+        extension = inferExtension(url);
     }
-
-    ALLEGRO_FILE *f = al_open_memfile(d.bytes, d.len, "r");
-    ALLEGRO_BITMAP *bitmap = al_load_bitmap_f(f, extension.c_str());
-    al_fclose(f);
-
-    return bitmap;
+    return dataToBitmap(d, extension);
 }

@@ -27,7 +27,14 @@ public:
     void setText(const std::string& newTxt);
 
 private:
-    std::string drawTextLine(double x, double y, std::string txt, const std::string& end = "") const;
+    const void draw_multiline(double x, double y, ALLEGRO_USTR *ustr, int flags);
+
+    const ALLEGRO_USTR *ustr_split_next(const ALLEGRO_USTR *ustr,
+                                        ALLEGRO_USTR_INFO *info, int *pos, const char *delimiter);
+
+    const ALLEGRO_USTR *get_next_soft_line(const ALLEGRO_USTR *ustr,
+                                           ALLEGRO_USTR_INFO *info, int *pos,
+                                           const ALLEGRO_FONT *font, float max_width);
 
 protected:
     void parseViewOptions(XMLElement *element) override;

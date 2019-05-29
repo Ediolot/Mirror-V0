@@ -13,6 +13,7 @@ using namespace nlohmann;
 NewsWidget::NewsWidget(BaseWidget *parent)
     : BaseWidget(parent)
     , runOnceAsync()
+    , imagesNeedUpdate(false)
 {}
 
 const std::string &NewsWidget::getDefaultViewPath() const {
@@ -42,12 +43,24 @@ void NewsWidget::updateControllerInter(BaseWidget::UpdateRate rate) {
 
                 titleWidget->setText(title);
                 if (!urlImage.empty()) {
-                    ALLEGRO_BITMAP *bmp = Requester(urlImage).asAlBitmap(".jpg");
+                    ALLEGRO_BITMAP* bmp = Requester(urlImage).asAlBitmap();
                     if (bmp) {
                         imageWidget->setImage(bmp);
                     }
                 }
             }
+            imagesNeedUpdate.store(true);
         });
+    }
+}
+
+void NewsWidget::updateView() {
+    BaseWidget::updateView();
+
+    if (imagesNeedUpdate.load()) {
+        // Bitmaps that are not in the main thread are orphans memory bitmaps that need
+        // to be converted into video bitmaps
+        al_convert_memory_bitmaps();
+        imagesNeedUpdate.store(false);
     }
 }

@@ -21,6 +21,7 @@ App::App()
     , eventQ(nullptr)
 {
     Utils::startAllegro();
+    startAllegroVars();
     Fonts::getInstance().load();
     Colors::getInstance().load();
     Images::getInstance().load();
@@ -34,7 +35,6 @@ App::~App() {
 }
 
 void App::run() {
-    startAllegroVars();
     loadActivities();
     std::thread updaterController(&App::updateControllers, this);
     std::thread updaterEvents(&App::updateEvents, this);
@@ -71,8 +71,6 @@ void App::updateViews() {
             }
             fps.draw();
             al_flip_display();
-        } else {
-            std::cout << "ev2" << std::endl;
         }
     }
 }
@@ -112,7 +110,6 @@ void App::updateControllers() {
             if (elapsedM > 60.0) {
                 elapsedM -= 60.0;
                 rate = BaseWidget::UpdateRate::EACH_MINUTE;
-                std::cout << "MIN" << std::endl;
             }
             if (elapsedH > 3600.0) {
                 elapsedH -= 3600.0;
@@ -130,6 +127,7 @@ void App::updateControllers() {
             activities[mainActivityId]->updateControllerRT(elapsedRealTime);
         }
         lastUpdate = update;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -143,6 +141,8 @@ void App::destroyAllegroVars() {
 bool App::startAllegroVars() {
     bool ok = true;
 
+    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+    al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
     Utils::initAllegroModule("Allegro creating displays...", ok, [&](){
         display = al_create_display(width, height);
         return display;
