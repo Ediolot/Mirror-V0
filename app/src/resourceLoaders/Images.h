@@ -13,8 +13,8 @@ public:
     enum Rid {
         LENNA = 0,
         WEATHER_CLOUDS,
-        WEATHER_FULL_NIGHT,
-        WEATHER_FULL_SUNNY,
+        WEATHER_NIGHT_AND_CLOUDS,
+        WEATHER_SUN_AND_CLOUDS,
         WEATHER_NIGHT,
         WEATHER_RAINY,
         WEATHER_RAINY_THUNDER,
@@ -33,7 +33,7 @@ public:
         return x;
     }
 
-    static const ALLEGRO_BITMAP* get(Rid id) {
+    static ALLEGRO_BITMAP* get(Rid id) {
         return Images::getInstance().bitmaps[id];
     }
 

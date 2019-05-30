@@ -13,6 +13,7 @@
 class WeatherWidget : public BaseWidget {
     inline static const std::string DEFAULT_VIEW = "../views/weatherWidget.xml";
     inline static const std::string URL = "http://api.openweathermap.org/data/2.5/forecast?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";
+    inline static const int N_PREDS = 5;
     RunOnceAsync runOnceAsync;
 
 public:

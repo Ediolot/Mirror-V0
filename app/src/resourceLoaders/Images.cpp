@@ -23,8 +23,8 @@ bool Images::load() {
     Utils::initAllegroModule("Allegro loading images...", ok, [&](){
         bitmaps[LENNA]                 = al_load_bitmap("../resources/images/lenna.png");
         bitmaps[WEATHER_CLOUDS]        = al_load_bitmap("../resources/images/weather/clouds.png");
-        bitmaps[WEATHER_FULL_NIGHT]    = al_load_bitmap("../resources/images/weather/full-night.png");
-        bitmaps[WEATHER_FULL_SUNNY]    = al_load_bitmap("../resources/images/weather/full-sunny.png");
+        bitmaps[WEATHER_NIGHT_AND_CLOUDS]    = al_load_bitmap("../resources/images/weather/full-night.png");
+        bitmaps[WEATHER_SUN_AND_CLOUDS]    = al_load_bitmap("../resources/images/weather/full-sunny.png");
         bitmaps[WEATHER_NIGHT]         = al_load_bitmap("../resources/images/weather/night.png");
         bitmaps[WEATHER_RAINY]         = al_load_bitmap("../resources/images/weather/rainy.png");
         bitmaps[WEATHER_RAINY_THUNDER] = al_load_bitmap("../resources/images/weather/rainy-thunder.png");

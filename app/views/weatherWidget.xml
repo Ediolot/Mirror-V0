@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
     <children>
-        
+
+        <widget type="image" id="image1" x="0"   y="0"     width="65%" height="75px" scale="scale_fit" path="../resources/images/weather/clouds.png"/>
+        <widget type="text"  id="temp1"  x="65%" y="0"     width="35%" height="25px" text="32ºC"    font-size="small" text-align="left"/>
+        <widget type="text"  id="hum1"   x="65%" y="25px"  width="35%" height="25px" text="74% H"   font-size="small" text-align="left"/>
+        <widget type="text"  id="wind1"  x="65%" y="50px"  width="35%" height="25px" text="0.7 Kmh" font-size="small" text-align="left"/>
+        <widget type="text"  id="cond1"  x="0"   y="80px"  width="65%" height="25px" text="heavy intensity shower rain" font-size="small" text-align="center" padding="5px"/>
+        <widget type="text"  id="day1"   x="65%" y="80px"  width="35%" height="25px" text="Today"   font-size="small" text-align="left"/>
+        <widget type="text"  id="time1"  x="65%" y="100px" width="35%" height="25px" text="9:00AM"  font-size="small" text-align="left"/>
+
+        <widget type="image" id="image2" x="0"   y="150px" width="65%" height="75px" scale="scale_fit" path="../resources/images/weather/clouds.png"/>
+        <widget type="text"  id="temp2"  x="65%" y="150px" width="35%" height="25px" text="32ºC"    font-size="small" text-align="left"/>
+        <widget type="text"  id="hum2"   x="65%" y="175px" width="35%" height="25px" text="74% H"   font-size="small" text-align="left"/>
+        <widget type="text"  id="wind2"  x="65%" y="200px" width="35%" height="25px" text="0.7 Kmh" font-size="small" text-align="left"/>
+        <widget type="text"  id="day2"   x="65%" y="230px" width="35%" height="25px" text="Today"   font-size="small" text-align="left"/>
+        <widget type="text"  id="time2"  x="65%" y="250px" width="35%" height="25px" text="9:00AM"  font-size="small" text-align="left"/>
+        <widget type="text"  id="cond2"  x="0"   y="230px" width="65%" height="25px" text="heavy intensity shower rain" font-size="small" text-align="center" padding="5px"/>
+
+        <widget type="image" id="image3" x="0"   y="300px" width="65%" height="75px" scale="scale_fit" path="../resources/images/weather/clouds.png"/>
+        <widget type="text"  id="temp3"  x="65%" y="300px" width="35%" height="25px" text="32ºC"    font-size="small" text-align="left"/>
+        <widget type="text"  id="hum3"   x="65%" y="325px" width="35%" height="25px" text="74% H"   font-size="small" text-align="left"/>
+        <widget type="text"  id="wind3"  x="65%" y="350px" width="35%" height="25px" text="0.7 Kmh" font-size="small" text-align="left"/>
+        <widget type="text"  id="day3"   x="65%" y="380px" width="35%" height="25px" text="Today"   font-size="small" text-align="left"/>
+        <widget type="text"  id="time3"  x="65%" y="400px" width="35%" height="25px" text="9:00AM"  font-size="small" text-align="left"/>
+        <widget type="text"  id="cond3"  x="0"   y="380px" width="65%" height="25px" text="heavy intensity shower rain" font-size="small" text-align="center" padding="5px"/>
+
+        <widget type="image" id="image4" x="0"   y="450px" width="65%" height="75px" scale="scale_fit" path="../resources/images/weather/clouds.png"/>
+        <widget type="text"  id="temp4"  x="65%" y="450px" width="35%" height="25px" text="32ºC"    font-size="small" text-align="left"/>
+        <widget type="text"  id="hum4"   x="65%" y="475px" width="35%" height="25px" text="74% H"   font-size="small" text-align="left"/>
+        <widget type="text"  id="wind4"  x="65%" y="500px" width="35%" height="25px" text="0.7 Kmh" font-size="small" text-align="left"/>
+        <widget type="text"  id="day4"   x="65%" y="530px" width="35%" height="25px" text="Today"   font-size="small" text-align="left"/>
+        <widget type="text"  id="time4"  x="65%" y="550px" width="35%" height="25px" text="9:00AM"  font-size="small" text-align="left"/>
+        <widget type="text"  id="cond4"  x="0"   y="530px" width="65%" height="25px" text="heavy intensity shower rain" font-size="small" text-align="center" padding="5px"/>
+
+        <widget type="image" id="image5" x="0"   y="600px" width="65%" height="75px" scale="scale_fit" path="../resources/images/weather/clouds.png"/>
+        <widget type="text"  id="temp5"  x="65%" y="600px" width="35%" height="25px" text="32ºC"    font-size="small" text-align="left"/>
+        <widget type="text"  id="hum5"   x="65%" y="625px" width="35%" height="25px" text="74% H"   font-size="small" text-align="left"/>
+        <widget type="text"  id="wind5"  x="65%" y="650px" width="35%" height="25px" text="0.7 Kmh" font-size="small" text-align="left"/>
+        <widget type="text"  id="day5"   x="65%" y="680px" width="35%" height="25px" text="Today"   font-size="small" text-align="left"/>
+        <widget type="text"  id="time5"  x="65%" y="700px" width="35%" height="25px" text="9:00AM"  font-size="small" text-align="left"/>
+        <widget type="text"  id="cond5"  x="0"   y="680px" width="65%" height="25px" text="heavy intensity shower rain" font-size="small" text-align="center" padding="5px"/>
+
     </children>
 </root>

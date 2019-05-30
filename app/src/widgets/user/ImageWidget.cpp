@@ -15,10 +15,13 @@ ImageWidget::ImageWidget(BaseWidget *parent)
     , image(nullptr)
     , scale(Properties::SCALE_TYPE::SCALE_ALL)
     , mtx()
+    , needsFree(true)
 {}
 
 ImageWidget::~ImageWidget() {
-    al_destroy_bitmap(image);
+    if (needsFree) {
+        al_destroy_bitmap(image);
+    }
 }
 
 const std::string &ImageWidget::getDefaultViewPath() const {
@@ -86,12 +89,15 @@ void ImageWidget::updateView() {
     mtx.unlock();
 }
 
-void ImageWidget::setImage(ALLEGRO_BITMAP* bitmap) {
+void ImageWidget::setImage(ALLEGRO_BITMAP* bitmap, bool free) {
     imagePath = "";
     mtx.lock();
-    if (image) {
-        al_destroy_bitmap(image);
+    if (needsFree) {
+        if (image) {
+            al_destroy_bitmap(image);
+        }
     }
+    needsFree = free;
     image = bitmap;
     mtx.unlock();
 }

@@ -16,6 +16,7 @@ class ImageWidget : public BaseWidget {
     ALLEGRO_BITMAP *image;
     Properties::SCALE_TYPE scale;
     std::mutex mtx;
+    bool needsFree;
 
 public:
     explicit ImageWidget(BaseWidget* parent = nullptr);
@@ -23,7 +24,7 @@ public:
     const std::string& getDefaultViewPath() const override;
     void updateView() override;
     void setImage(const std::string& path);
-    void setImage(ALLEGRO_BITMAP* bitmap); // The bitmap will be freed by ImageWidget upon destruction
+    void setImage(ALLEGRO_BITMAP* bitmap, bool free = true);
     void setModeFromStr(const std::string& modeStr);
 
 protected:
