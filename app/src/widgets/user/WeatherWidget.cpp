@@ -4,12 +4,14 @@
 
 #include "WeatherWidget.h"
 #include "../../utils/Utils.h"
+#include "../../utils/Requester.h"
 
 using namespace nlohmann;
 
-WeatherWidget::WeatherWidget(BaseWidget *parent) : BaseWidget(parent) {
-
-}
+WeatherWidget::WeatherWidget(BaseWidget *parent)
+    : BaseWidget(parent)
+    , runOnceAsync()
+{}
 
 const std::string &WeatherWidget::getDefaultViewPath() const {
     return DEFAULT_VIEW;
@@ -24,10 +26,11 @@ void WeatherWidget::updateControllerInter(BaseWidget::UpdateRate rate) {
 
 
     if (rateIs(rate, UpdateRate::EACH_MINUTE)) {
-        std::string url_weather = "http://api.openweathermap.org/data/2.5/forecast?id=3128760&appid=c4aeec5a95e4ef1db4c115086f5eeb5a&units=metric";
-        //json data = Utils::requestJSON(url_weather);
-        //if (!data.empty()) {
-
-        //}
+        runOnceAsync.run([=](){
+            json data = Requester(URL).asJson();
+            if (data.empty()) {
+                return;
+            }
+        });
     }
 }

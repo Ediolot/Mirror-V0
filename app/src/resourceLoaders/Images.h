@@ -9,14 +9,25 @@
 #include <allegro5/bitmap.h>
 
 class Images {
-    static const int ELEMENTS = 1;
-    ALLEGRO_BITMAP* bitmaps[ELEMENTS];
-
 public:
     enum Rid {
         LENNA = 0,
+        WEATHER_CLOUDS,
+        WEATHER_FULL_NIGHT,
+        WEATHER_FULL_SUNNY,
+        WEATHER_NIGHT,
+        WEATHER_RAINY,
+        WEATHER_RAINY_THUNDER,
+        WEATHER_SNOWY,
+        WEATHER_SNOWY_RAINY,
+        WEATHER_SUN,
+        N_IMAGES
     };
 
+private:
+    ALLEGRO_BITMAP* bitmaps[N_IMAGES];
+
+public:
     static Images& getInstance() {
         static Images x;
         return x;
